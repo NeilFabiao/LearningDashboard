@@ -65,7 +65,52 @@ with col2:
 
 # Column 3: Feature importances
 with col3:
-    st.markdown('### Feature Importance')
+    st.markdown('#### Top Districts by Median House Value')
+    
+    # Format the district_values DataFrame for display
+    district_values_display = district_values.copy()
+    district_values_display['MedianHouseValue'] = district_values_display['MedianHouseValue'].apply(lambda x: f"${x:,.0f}")
+    
+    # Find max median house value for the progress bars
+    max_value = district_values['MedianHouseValue'].max()
+    
+    # Create a custom column config with progress bars for the median house value
+    district_values_display['Progress'] = district_values['MedianHouseValue'].apply(lambda x: x / max_value)
+    
+    # Display the dataframe with progress bars
+    st.dataframe(district_values_display,
+                 column_order=('District', 'MedianHouseValue', 'Progress'),
+                 hide_index=True,
+                 width=None,
+                 column_config={
+                     'District': st.column_config.TextColumn('District'),
+                     'MedianHouseValue': st.column_config.TextColumn('Median House Value'),
+                     'Progress': st.column_config.ProgressColumn('Median House Value', format="%f")
+                 })
+    
+    
+
+st.write("---")
+# Additional analysis and visualizations can be added below
+
+# Display the full map with actual house values for comparison
+st.subheader('Actual Median House Value Map')
+fig_full_map = px.scatter_mapbox(
+    california_housing.frame,
+    lat="Latitude",
+    lon="Longitude",
+    size="MedHouseVal",
+    color="MedHouseVal",
+    color_continuous_scale=px.colors.cyclical.IceFire,
+    size_max=15,
+    zoom=5,
+    mapbox_style="carto-positron"
+)
+st.plotly_chart(fig_full_map, use_container_width=True)
+
+st.write("---")
+
+st.markdown('### Feature Importance')
     
     # Re-fit model with all features for feature importance
     model_all_features = DecisionTreeRegressor()
@@ -86,5 +131,3 @@ with col3:
         title='Feature Importances in Predicting House Prices'
     )
     st.plotly_chart(fig, use_container_width=True)
-
-# Additional analysis and visualizations can be added below
