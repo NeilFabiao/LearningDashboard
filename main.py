@@ -63,10 +63,7 @@ col1, col2 = st.columns(2)
 with col1:
     predicted_value = float(prediction[0])
     st.write(f"The median house value is : ${predicted_value * 100000:,.2f}")
-    st.write('---')
 
-# Map Visualization
-with col2:
     st.subheader('Geographical Distribution of Predicted House Prices')
     fig = px.scatter_mapbox(
         df,
@@ -80,6 +77,15 @@ with col2:
         mapbox_style="carto-positron"
     )
     st.plotly_chart(fig, use_container_width=True)
+    
+# Map Visualization
+with col2:
+    # Bar plot of feature importance
+    feature_importance_df = pd.DataFrame({'Feature': X.columns, 'Importance': model.feature_importances_})
+    fig = px.bar(feature_importance_df.sort_values(by='Importance', ascending=False), x='Feature', y='Importance',
+                 labels={'Importance': 'Feature Importance'}, color='Importance')
+    st.plotly_chart(fig, use_container_width=True)
+    
 
 st.write('---')
 
