@@ -1,59 +1,42 @@
 import streamlit as st
 import pandas as pd
+from sklearn.datasets import fetch_california_housing
+from sklearn.ensemble import RandomForestRegressor
 import shap
 import matplotlib.pyplot as plt
-from sklearn import datasets
-from sklearn.ensemble import RandomForestRegressor
 
 st.write("""
-# Boston House Price Prediction App
+# California House Price Prediction App
 
-This app predicts the **Boston House Price**!
+This app predicts the **California House Price**!
 """)
 st.write('---')
 
-# Loads the Boston House Price Dataset
-#boston = datasets.load_boston()
-#X = pd.DataFrame(boston.data, columns=boston.feature_names)
-#Y = pd.DataFrame(boston.target, columns=["MEDV"])
+# Loads the California Housing Dataset
+california_housing = fetch_california_housing(as_frame=True)
+X = california_housing.data
+Y = california_housing.target
 
-import numpy as np
-data_url = "http://lib.stat.cmu.edu/datasets/boston"
-raw_df = pd.read_csv(data_url, sep="\s+", skiprows=22, header=None)
-X = np.hstack([raw_df.values[::2, :], raw_df.values[1::2, :2]])
-Y = raw_df.values[1::2, 2]
-
-# Sidebar
-# Header of Specify Input Parameters
+# Sidebar - Specify Input Parameters
 st.sidebar.header('Specify Input Parameters')
 
 def user_input_features():
-    CRIM = st.sidebar.slider('CRIM', X.CRIM.min(), X.CRIM.max(), X.CRIM.mean())
-    ZN = st.sidebar.slider('ZN', X.ZN.min(), X.ZN.max(), X.ZN.mean())
-    INDUS = st.sidebar.slider('INDUS', X.INDUS.min(), X.INDUS.max(), X.INDUS.mean())
-    CHAS = st.sidebar.slider('CHAS', X.CHAS.min(), X.CHAS.max(), X.CHAS.mean())
-    NOX = st.sidebar.slider('NOX', X.NOX.min(), X.NOX.max(), X.NOX.mean())
-    RM = st.sidebar.slider('RM', X.RM.min(), X.RM.max(), X.RM.mean())
-    AGE = st.sidebar.slider('AGE', X.AGE.min(), X.AGE.max(), X.AGE.mean())
-    DIS = st.sidebar.slider('DIS', X.DIS.min(), X.DIS.max(), X.DIS.mean())
-    RAD = st.sidebar.slider('RAD', X.RAD.min(), X.RAD.max(), X.RAD.mean())
-    TAX = st.sidebar.slider('TAX', X.TAX.min(), X.TAX.max(), X.TAX.mean())
-    PTRATIO = st.sidebar.slider('PTRATIO', X.PTRATIO.min(), X.PTRATIO.max(), X.PTRATIO.mean())
-    B = st.sidebar.slider('B', X.B.min(), X.B.max(), X.B.mean())
-    LSTAT = st.sidebar.slider('LSTAT', X.LSTAT.min(), X.LSTAT.max(), X.LSTAT.mean())
-    data = {'CRIM': CRIM,
-            'ZN': ZN,
-            'INDUS': INDUS,
-            'CHAS': CHAS,
-            'NOX': NOX,
-            'RM': RM,
-            'AGE': AGE,
-            'DIS': DIS,
-            'RAD': RAD,
-            'TAX': TAX,
-            'PTRATIO': PTRATIO,
-            'B': B,
-            'LSTAT': LSTAT}
+    MedInc = st.sidebar.slider('Median Income', X.MedInc.min(), X.MedInc.max(), X.MedInc.mean())
+    HouseAge = st.sidebar.slider('House Age', X.HouseAge.min(), X.HouseAge.max(), X.HouseAge.mean())
+    AveRooms = st.sidebar.slider('Average Rooms', X.AveRooms.min(), X.AveRooms.max(), X.AveRooms.mean())
+    AveBedrms = st.sidebar.slider('Average Bedrooms', X.AveBedrms.min(), X.AveBedrms.max(), X.AveBedrms.mean())
+    Population = st.sidebar.slider('Population', X.Population.min(), X.Population.max(), X.Population.mean())
+    AveOccup = st.sidebar.slider('Average Occupancy', X.AveOccup.min(), X.AveOccup.max(), X.AveOccup.mean())
+    Latitude = st.sidebar.slider('Latitude', X.Latitude.min(), X.Latitude.max(), X.Latitude.mean())
+    Longitude = st.sidebar.slider('Longitude', X.Longitude.min(), X.Longitude.max(), X.Longitude.mean())
+    data = {'Median Income': MedInc,
+            'House Age': HouseAge,
+            'Average Rooms': AveRooms,
+            'Average Bedrooms': AveBedrms,
+            'Population': Population,
+            'Average Occupancy': AveOccup,
+            'Latitude': Latitude,
+            'Longitude': Longitude}
     features = pd.DataFrame(data, index=[0])
     return features
 
@@ -72,12 +55,11 @@ model.fit(X, Y)
 # Apply Model to Make Prediction
 prediction = model.predict(df)
 
-st.header('Prediction of MEDV')
-st.write(prediction)
+st.header('Prediction of Median House Value')
+st.write(prediction * 100000)  # Assuming the target is in $100,000 units
 st.write('---')
 
 # Explaining the model's predictions using SHAP values
-# https://github.com/slundberg/shap
 explainer = shap.TreeExplainer(model)
 shap_values = explainer.shap_values(X)
 
