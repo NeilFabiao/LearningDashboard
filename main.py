@@ -66,8 +66,6 @@ predicted_value = float(prediction[0])
 st.write(f"The median house value is : ${predicted_value * 100000:,.2f}")
 st.write('---')
 
-st.header('Map Visualization')
-
 # Map Visualization
 st.header('Geographical Distribution of Data')
 fig = px.scatter_mapbox(
