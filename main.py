@@ -59,15 +59,18 @@ with col1:
 
 # Column 2: Geographical distribution of median house value
 with col2:
-    st.markdown('### Geographical Distribution')
     
-    # Create a map visualization
+    predictions = model.predict(X)  # Get predictions for all data points
+    X['PredictedValue'] = predictions
+    
+    # Create a map visualization using the latitude and longitude of your data points
+    # and the predicted values
     fig = px.scatter_mapbox(
-        california_housing.frame,
+        X,
         lat="Latitude",
         lon="Longitude",
-        size=[prediction],
-        color=[prediction],
+        size="PredictedValue",
+        color="PredictedValue",
         color_continuous_scale=px.colors.cyclical.IceFire,
         size_max=15,
         zoom=5,
