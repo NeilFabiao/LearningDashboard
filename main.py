@@ -21,20 +21,20 @@ Y = california_housing.target
 st.sidebar.header('Specify Input Parameters')
 
 def user_input_features():
-    MedInc = st.sidebar.slider('Median Income', X.MedInc.min(), X.MedInc.max(), X.MedInc.mean())
-    HouseAge = st.sidebar.slider('House Age', X.HouseAge.min(), X.HouseAge.max(), X.HouseAge.mean())
-    AveRooms = st.sidebar.slider('Average Rooms', X.AveRooms.min(), X.AveRooms.max(), X.AveRooms.mean())
-    AveBedrms = st.sidebar.slider('Average Bedrooms', X.AveBedrms.min(), X.AveBedrms.max(), X.AveBedrms.mean())
-    Population = st.sidebar.slider('Population', X.Population.min(), X.Population.max(), X.Population.mean())
-    AveOccup = st.sidebar.slider('Average Occupancy', X.AveOccup.min(), X.AveOccup.max(), X.AveOccup.mean())
-    Latitude = st.sidebar.slider('Latitude', X.Latitude.min(), X.Latitude.max(), X.Latitude.mean())
-    Longitude = st.sidebar.slider('Longitude', X.Longitude.min(), X.Longitude.max(), X.Longitude.mean())
-    data = {'Median Income': MedInc,
-            'House Age': HouseAge,
-            'Average Rooms': AveRooms,
-            'Average Bedrooms': AveBedrms,
+    MedInc = st.sidebar.slider('Median Income', X['MedInc'].min(), X['MedInc'].max(), X['MedInc'].mean())
+    HouseAge = st.sidebar.slider('House Age', X['HouseAge'].min(), X['HouseAge'].max(), X['HouseAge'].mean())
+    AveRooms = st.sidebar.slider('Average Rooms', X['AveRooms'].min(), X['AveRooms'].max(), X['AveRooms'].mean())
+    AveBedrms = st.sidebar.slider('Average Bedrooms', X['AveBedrms'].min(), X['AveBedrms'].max(), X['AveBedrms'].mean())
+    Population = st.sidebar.slider('Population', X['Population'].min(), X['Population'].max(), X['Population'].mean())
+    AveOccup = st.sidebar.slider('Average Occupancy', X['AveOccup'].min(), X['AveOccup'].max(), X['AveOccup'].mean())
+    Latitude = st.sidebar.slider('Latitude', X['Latitude'].min(), X['Latitude'].max(), X['Latitude'].mean())
+    Longitude = st.sidebar.slider('Longitude', X['Longitude'].min(), X['Longitude'].max(), X['Longitude'].mean())
+    data = {'MedInc': MedInc,
+            'HouseAge': HouseAge,
+            'AveRooms': AveRooms,
+            'AveBedrms': AveBedrms,
             'Population': Population,
-            'Average Occupancy': AveOccup,
+            'AveOccup': AveOccup,
             'Latitude': Latitude,
             'Longitude': Longitude}
     features = pd.DataFrame(data, index=[0])
