@@ -99,7 +99,7 @@ with col3:
 
 st.write('---')
 
-# Yadd a button to refresh predictions
+# add a button to refresh predictions
 if st.sidebar.button('Predict New House Price'):
     new_prediction = model.predict(user_input_features())
     col1.write(f"New median house value is: ${new_prediction[0] * 100000:,.2f}")
