@@ -2,8 +2,10 @@ import streamlit as st
 import pandas as pd
 import shap
 from sklearn.datasets import fetch_california_housing
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.tree import DecisionTreeRegressor 
+#from sklearn.ensemble import RandomForestRegressor
 import matplotlib.pyplot as plt
+import plotly.express as px  
 
 st.write("""
 # California House Price Prediction App
@@ -16,6 +18,7 @@ st.write('---')
 california_housing = fetch_california_housing(as_frame=True)
 X = california_housing.data
 Y = california_housing.target
+X['MedHouseValue'] = Y
 
 # Sidebar - Specify Input Parameters
 st.sidebar.header('Specify Input Parameters')
@@ -49,18 +52,22 @@ st.header('Specified Input parameters')
 st.write(df)
 st.write('---')
 
+
 # Build Regression Model
-model = RandomForestRegressor()
+model = DecisionTreeRegressor()
 model.fit(X, Y)
 # Apply Model to Make Prediction
 prediction = model.predict(df)
 
+
 st.header('Prediction of Median House Value')
-st.write(prediction * 100000)  # Assuming the target is in $100,000 units
+predicted_value = float(prediction[0])
+st.write(f"The median house value is : ${predicted_value * 100000:,.2f}")
 st.write('---')
 
+
 # Explaining the model's predictions using SHAP values
-explainer = shap.TreeExplainer(model)
+explainer = shap.Explainer(model)  # shap.TreeExplainer is now just shap.Explainer in newer versions of SHAP
 shap_values = explainer.shap_values(X)
 
 st.header('Feature Importance')
@@ -69,6 +76,23 @@ shap.summary_plot(shap_values, X)
 st.pyplot(bbox_inches='tight')
 st.write('---')
 
+
 plt.title('Feature importance based on SHAP values (Bar)')
 shap.summary_plot(shap_values, X, plot_type="bar")
 st.pyplot(bbox_inches='tight')
+
+ Map Visualization
+st.header('Geographical Distribution of Data')
+fig = px.scatter_mapbox(
+    X,
+    lat="Latitude",
+    lon="Longitude",
+    size="MedInc",
+    color="MedHouseValue",
+    color_continuous_scale=px.colors.cyclical.IceFire,
+    size_max=15,
+    zoom=5,
+    mapbox_style="carto-positron"
+)
+st.plotly_chart(fig, use_container_width=True)
+
