@@ -20,10 +20,10 @@ Y = california_housing.target
 # Assuming we have longitude and latitude to approximately group by district
 # Generate some mock district labels for the sake of example
 # In a real-world scenario, you would use actual geographic division data such as zip codes
-X['District'] = pd.cut(X['Longitude'], bins=10, labels=[f"District {i}" for i in range(10)])
+X['Zone'] = pd.cut(X['Longitude'], bins=10, labels=[f"District {i}" for i in range(10)])
 
 # Calculate median house values by district
-district_values = X.groupby('District').apply(
+district_values = X.groupby('Zone').apply(
     lambda df: pd.Series({
         'MedianHouseValue': Y.loc[df.index].median()
     })
@@ -110,7 +110,7 @@ with col3:
                  hide_index=True,
                  width=None,
                  column_config={
-                     'District': st.column_config.TextColumn('District'),
+                     'Zone': st.column_config.TextColumn('Zone'),
                      'MedianHouseValue': st.column_config.TextColumn('Median House Value'),
                      'Progress': st.column_config.ProgressColumn('Median House Value', format="%f")
                  })
