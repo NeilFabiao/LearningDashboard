@@ -65,6 +65,24 @@ predicted_value = float(prediction[0])
 st.write(f"The median house value is : ${predicted_value * 100000:,.2f}")
 st.write('---')
 
+st.header('Map Visualization')
+
+# Map Visualization
+st.header('Geographical Distribution of Data')
+fig = px.scatter_mapbox(
+    X,
+    lat="Latitude",
+    lon="Longitude",
+    size="MedInc",
+    color="MedHouseValue",
+    color_continuous_scale=px.colors.cyclical.IceFire,
+    size_max=15,
+    zoom=5,
+    mapbox_style="carto-positron"
+)
+st.plotly_chart(fig, use_container_width=True)
+
+st.write('---')
 
 st.header('Feature Importance')
 plt.title('Feature importance based on SHAP values')
@@ -82,19 +100,5 @@ plt.title('Feature importance based on SHAP values (Bar)')
 shap.summary_plot(shap_values, X, plot_type="bar")
 st.pyplot(bbox_inches='tight')
 
-'''
-# Map Visualization
-st.header('Geographical Distribution of Data')
-fig = px.scatter_mapbox(
-    X,
-    lat="Latitude",
-    lon="Longitude",
-    size="MedInc",
-    color="MedHouseValue",
-    color_continuous_scale=px.colors.cyclical.IceFire,
-    size_max=15,
-    zoom=5,
-    mapbox_style="carto-positron"
-)
-st.plotly_chart(fig, use_container_width=True)'''
+
 
