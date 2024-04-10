@@ -18,7 +18,7 @@ st.write('---')
 california_housing = fetch_california_housing(as_frame=True)
 X = california_housing.data
 Y = california_housing.target
-#X['MedHouseValue'] = Y
+X['MedHouseValue'] = Y
 
 # Sidebar - Specify Input Parameters
 st.sidebar.header('Specify Input Parameters')
