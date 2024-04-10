@@ -20,6 +20,9 @@ california_housing = fetch_california_housing(as_frame=True)
 X = california_housing.data
 Y = california_housing.target
 
+# Data Cleaning
+X = X.drop_duplicates() # Remove duplicates
+
 # Sidebar - Specify Input Parameters
 st.sidebar.header('Specify Input Parameters')
 
