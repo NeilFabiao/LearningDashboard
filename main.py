@@ -48,14 +48,15 @@ col1, col2, col3 = st.columns((2, 3, 2), gap="medium")
 # Column 1: Input parameters and prediction
 with col1:
     st.markdown('### Prediction')
-    
+
     # Build and fit the model
     model = DecisionTreeRegressor()
-    model.fit(X[['MedInc', 'HouseAge']], Y)
+    model.fit(X, Y)
     
-    # Predict the price
+    # Predict the price using user input
     prediction = model.predict(user_input)[0]
-    st.metric(label="Predicted Median House Value", value=f"${prediction * 1000:,.0f}")
+    st.metric(label="Predicted Median House Value", value=f"${prediction * 1000:,.2f}")
+
 
 # Column 2: Geographical distribution of median house value
 with col2:
