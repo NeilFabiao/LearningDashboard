@@ -18,7 +18,7 @@ st.write('---')
 california_housing = fetch_california_housing(as_frame=True)
 X = california_housing.data
 Y = california_housing.target
-X['MedHouseValue'] = Y
+#X['MedHouseValue'] = Y
 
 # Sidebar - Specify Input Parameters
 st.sidebar.header('Specify Input Parameters')
@@ -81,6 +81,7 @@ plt.title('Feature importance based on SHAP values (Bar)')
 shap.summary_plot(shap_values, X, plot_type="bar")
 st.pyplot(bbox_inches='tight')
 
+'''
 # Map Visualization
 st.header('Geographical Distribution of Data')
 fig = px.scatter_mapbox(
@@ -94,5 +95,5 @@ fig = px.scatter_mapbox(
     zoom=5,
     mapbox_style="carto-positron"
 )
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, use_container_width=True)'''
 
