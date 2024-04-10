@@ -67,14 +67,16 @@ col1, col2 = st.columns(2)
 
 # Column 1: Map Visualization
 with col1:
-    
-    st.subheader('Geographical Distribution of House Prices')
+
+    st.subheader('Geographical Distribution of Predicted House Prices')
     fig = px.scatter_mapbox(
-        pd.concat([X, pd.DataFrame({'HousePrice': Y})], axis=1),
+        df,
         lat="Latitude",
         lon="Longitude",
-        color="HousePrice",
+        size=[predicted_value],  # Size based on predicted house price
+        color=[predicted_value],  # Color based on predicted house price
         color_continuous_scale=px.colors.cyclical.IceFire,
+        size_max=15,
         zoom=5,
         mapbox_style="carto-positron"
     )
@@ -107,3 +109,15 @@ if st.sidebar.button('Predict New House Price'):
 
 st.plotly_chart(fig, use_container_width=True)
 st.write('---')
+
+st.subheader('Geographical Distribution of House Prices')
+    fig = px.scatter_mapbox(
+        pd.concat([X, pd.DataFrame({'HousePrice': Y})], axis=1),
+        lat="Latitude",
+        lon="Longitude",
+        color="HousePrice",
+        color_continuous_scale=px.colors.cyclical.IceFire,
+        zoom=5,
+        mapbox_style="carto-positron"
+    )
+    st.plotly_chart(fig, use_container_width=True)
