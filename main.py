@@ -51,7 +51,7 @@ with col1:
 
     # Build and fit the model
     model = DecisionTreeRegressor()
-    model.fit(X, Y)
+    model.fit([['MedInc', 'HouseAge']], Y)
     
     # Predict the price using user input
     prediction = model.predict(user_input)[0]
@@ -61,7 +61,7 @@ with col1:
 # Column 2: Geographical distribution of median house value
 with col2:
     
-    predictions = model.predict(X)  # Get predictions for all data points
+    prediction = model.predict(user_input)[0]  # Get predictions for all data points
     X['PredictedValue'] = predictions
     
     # Create a map visualization using the latitude and longitude of your data points
