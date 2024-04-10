@@ -13,6 +13,13 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+st.write("""
+# California House Price Prediction App 🏠
+
+This app predicts the **California House Price**!
+""")
+st.write('---')
+
 # Load the California housing dataset
 california_housing = fetch_california_housing(as_frame=True)
 X = california_housing.data
