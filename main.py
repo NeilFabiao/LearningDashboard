@@ -5,6 +5,13 @@ from sklearn.tree import DecisionTreeRegressor
 import matplotlib.pyplot as plt
 import plotly.express as px
 
+st.write("""
+# California House Price Prediction App
+
+This app predicts the **California House Price**!
+""")
+st.write('---')
+
 # Load California housing dataset
 california_housing = fetch_california_housing(as_frame=True)
 X = california_housing.data
