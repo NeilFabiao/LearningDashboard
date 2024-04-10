@@ -22,4 +22,4 @@ Repo for learning how to do dashboard with stream lit
 
 * Repo owner Neil Fabião -> @neilfabiao ✌🏾
 
-![](https://komarev.com/ghpvc/?username=neilJarvis&color=blue)
+![](https://komarev.com/ghpvc/?username=neildashboards&color=blue)
