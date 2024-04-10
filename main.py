@@ -79,20 +79,16 @@ with col2:
     
     # Get the updated predictions
     X['PredictedValue'] = update_predictions(median_income, house_age)
-    
-    # Create the map visualization with updated predictions
-    fig = px.scatter_mapbox(
-        X,
-        lat="Latitude",
-        lon="Longitude",
-        size="PredictedValue",
-        color="PredictedValue",
-        color_continuous_scale=px.colors.cyclical.IceFire,
-        size_max=15,
-        zoom=5,
-        mapbox_style="carto-positron"
-    )
-    st.plotly_chart(fig, use_container_width=True)
+
+    # Create a scatter plot
+    plt.figure(figsize=(10, 6))
+    plt.scatter(X['Longitude'], X['Latitude'], c=X['PredictedValue'], cmap='viridis', s=X['PredictedValue'])
+    plt.colorbar(label='Predicted Median House Value')
+    plt.xlabel('Longitude')
+    plt.ylabel('Latitude')
+    plt.title('Geographical Distribution of Median House Value')
+    st.pyplot(plt)
+
 
 # Column 3: Feature importances
 with col3:
