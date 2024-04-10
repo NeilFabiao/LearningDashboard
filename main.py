@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
+import shap
 from sklearn.datasets import fetch_california_housing
 from sklearn.ensemble import RandomForestRegressor
-import shap
 import matplotlib.pyplot as plt
 
 st.write("""
