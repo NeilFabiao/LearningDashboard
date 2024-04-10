@@ -51,11 +51,11 @@ with col1:
 
     # Build and fit the model
     model = DecisionTreeRegressor()
-    model.fit([['MedInc', 'HouseAge']], Y)
+    model.fit(X[['MedInc', 'HouseAge']], Y)
     
-    # Predict the price using user input
+    # Predict the price
     prediction = model.predict(user_input)[0]
-    st.metric(label="Predicted Median House Value", value=f"${prediction * 1000:,.2f}")
+    st.metric(label="Predicted Median House Value", value=f"${prediction * 1000:,.0f}")
 
 
 # Column 2: Geographical distribution of median house value
