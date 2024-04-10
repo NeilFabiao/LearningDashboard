@@ -2,4 +2,4 @@
 
 shap
 matplotlib
-sklearn
+scikit-learn
