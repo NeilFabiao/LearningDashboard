@@ -126,6 +126,7 @@ st.plotly_chart(fig_full_map, use_container_width=True)
 
 st.write("---")
 
+'''
 st.markdown('### Feature Importance')
 
 # Re-fit model with all features for feature importance
@@ -146,4 +147,4 @@ fig = px.bar(
     color='Importance',
     title='Feature Importances in Predicting House Prices'
 )
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, use_container_width=True)'''
