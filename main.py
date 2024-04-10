@@ -39,7 +39,9 @@ def user_input_features():
             'Population': Population,
             'AveOccup': AveOccup,
             'Latitude': Latitude,
-            'Longitude': Longitude}
+            'Longitude': Longitude,
+            'MedHouseValue':X['MedHouseValue']
+           }
     features = pd.DataFrame(data, index=[0])
     return features
 
