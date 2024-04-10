@@ -6,6 +6,8 @@ from sklearn.tree import DecisionTreeRegressor
 #from sklearn.ensemble import RandomForestRegressor
 import matplotlib.pyplot as plt
 import plotly.express as px  
+st.set_option('deprecation.showPyplotGlobalUse', False)
+
 
 st.write("""
 # California House Price Prediction App
