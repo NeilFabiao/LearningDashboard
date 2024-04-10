@@ -1,4 +1,4 @@
-# LearningDashboard (Work in Progress 😅 - Created for portfolio development, 2024)
+# Learning how to create Dashboard (Work in Progress 😅 - Created for portfolio development, 2024)
 
 Repo for learning how to do dashboard with stream lit 
 
