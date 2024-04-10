@@ -1,30 +1,18 @@
 import streamlit as st
 import pandas as pd
-import shap
 from sklearn.datasets import fetch_california_housing
-from sklearn.tree import DecisionTreeRegressor 
-#from sklearn.ensemble import RandomForestRegressor
+from sklearn.tree import DecisionTreeRegressor
 import matplotlib.pyplot as plt
-import plotly.express as px  
+import plotly.express as px
 
-
-st.write("""
-# California House Price Prediction App
-
-This app predicts the **California House Price**!
-""")
-st.write('---')
-
-# Loads the California Housing Dataset
+# Load California housing dataset
 california_housing = fetch_california_housing(as_frame=True)
 X = california_housing.data
 Y = california_housing.target
 
-# Data Cleaning
-X = X.drop_duplicates() # Remove duplicates
-
 # Sidebar - Specify Input Parameters
-st.sidebar.header('Specify Input Parameters')
+st.sidebar.header('House Price Prediction')
+st.sidebar.subheader('Specify Input Parameters')
 
 def user_input_features():
     MedInc = st.sidebar.slider('Median Income', X['MedInc'].min(), X['MedInc'].max(), X['MedInc'].mean())
@@ -51,56 +39,71 @@ df = user_input_features()
 
 # Main Panel
 
-# Print specified input parameters
-st.header('Specified Input parameters')
-st.write(df)
-st.write('---')
-
-
 # Build Regression Model
 model = DecisionTreeRegressor()
 model.fit(X, Y)
+
 # Apply Model to Make Prediction
 prediction = model.predict(df)
 
-
-st.header('Prediction of Median House Value')
+# Display Predicted House Price
+st.subheader('Prediction of Median House Value')
 predicted_value = float(prediction[0])
 st.write(f"The median house value is : ${predicted_value * 100000:,.2f}")
 st.write('---')
 
 # Map Visualization
-st.header('Geographical Distribution of Data')
+st.subheader('Geographical Distribution of Predicted House Prices')
 fig = px.scatter_mapbox(
-    X,
+    df,
     lat="Latitude",
     lon="Longitude",
-    size="MedInc",
-    color="MedInc",
+    size=[predicted_value],  # Size based on predicted house price
+    color=[predicted_value],  # Color based on predicted house price
     color_continuous_scale=px.colors.cyclical.IceFire,
     size_max=15,
     zoom=5,
     mapbox_style="carto-positron"
 )
 st.plotly_chart(fig, use_container_width=True)
-
 st.write('---')
 
-st.header('Feature Importance')
-plt.title('Feature importance based on SHAP values')
+# Feature Importance Visualization
+st.subheader('Feature Importance based on Decision Tree')
 
-# Explaining the model's predictions using SHAP values
-explainer = shap.Explainer(model)  # shap.TreeExplainer is now just shap.Explainer in newer versions of SHAP
-shap_values = explainer.shap_values(X)
-
-shap.summary_plot(shap_values, X)
-st.pyplot(bbox_inches='tight')
+# Bar plot of feature importance
+feature_importance_df = pd.DataFrame({'Feature': X.columns, 'Importance': model.feature_importances_})
+fig = px.bar(feature_importance_df.sort_values(by='Importance', ascending=False), x='Feature', y='Importance',
+             labels={'Importance': 'Feature Importance'}, color='Importance')
+st.plotly_chart(fig, use_container_width=True)
 st.write('---')
 
+# Analysis of Housing Prices Across Different Regions
+st.subheader('Analysis of Housing Prices Across Different Regions')
 
-plt.title('Feature importance based on SHAP values (Bar)')
-shap.summary_plot(shap_values, X, plot_type="bar")
-st.pyplot(bbox_inches='tight')
+# Scatter plot of Latitude vs. Longitude colored by house prices
+fig = px.scatter_mapbox(
+    pd.concat([X[['Latitude', 'Longitude']], pd.DataFrame({'HousePrice': Y})], axis=1),
+    lat="Latitude",
+    lon="Longitude",
+    color="HousePrice",
+    color_continuous_scale="Viridis",
+    zoom=5,
+    mapbox_style="carto-positron"
+)
+st.plotly_chart(fig, use_container_width=True)
+st.write('---')
 
+# Relationship Between Median Income and Housing Prices
+st.subheader('Relationship Between Median Income and Housing Prices')
 
-
+# Scatter plot of Median Income vs. House Price
+fig = px.scatter(
+    pd.concat([X[['MedInc']], pd.DataFrame({'HousePrice': Y})], axis=1),
+    x='MedInc',
+    y='HousePrice',
+    trendline='ols',
+    labels={'HousePrice': 'Median House Price ($)', 'MedInc': 'Median Income'},
+)
+st.plotly_chart(fig, use_container_width=True)
+st.write('---')
