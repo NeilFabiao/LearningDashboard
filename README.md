@@ -9,7 +9,7 @@ Repo for learning how to do dashboard with stream lit
 
 0. The people I talked to along the way
 
-1. Data Professor, [Regression boston housing]([https://www.deeplearning.ai/short-courses/langchain-chat-with-your-data/](https://github.com/dataprofessor/streamlit_freecodecamp/tree/main)) 
+1. Data Professor, [Regression boston housing](https://github.com/dataprofessor/streamlit_freecodecamp/tree/main)
 
 2. Github and google
 
