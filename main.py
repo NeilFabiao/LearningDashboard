@@ -56,20 +56,19 @@ prediction = model.predict(df)
 # Display Predicted House Price and Map Visualization side by side
 st.subheader('Prediction and Map Visualization of Median House Value')
 
+st.subheader('Prediction and Input Parameters')
+predicted_value = float(prediction[0])
+st.write(f"The median house value is : ${predicted_value * 100000:,.2f}")
+st.markdown("**Input Parameters**")
+st.write(df)  # Transpose the dataframe for better visualization
+
 # Define columns layout
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
-# Column 1: Predicted House Price and Input Parameters
+# Column 1: Map Visualization
 with col1:
-    st.subheader('Prediction and Input Parameters')
-    predicted_value = float(prediction[0])
-    st.write(f"The median house value is : ${predicted_value * 100000:,.2f}")
-    st.markdown("**Input Parameters**")
-    st.write(df.T)  # Transpose the dataframe for better visualization
-
-# Column 2: Map Visualization
-with col2:
-    st.subheader('Geographical Distribution of House Prices')
+    
+st.subheader('Geographical Distribution of House Prices')
     fig = px.scatter_mapbox(
         pd.concat([X, pd.DataFrame({'HousePrice': Y})], axis=1),
         lat="Latitude",
@@ -81,8 +80,8 @@ with col2:
     )
     st.plotly_chart(fig, use_container_width=True)
 
-# Column 3: Feature Importance Visualization
-with col3:
+# Column 2: 
+with col2:
     st.subheader('Feature Importance')
     feature_importance_df = pd.DataFrame({
         'Feature': X.columns, 
@@ -96,6 +95,7 @@ with col3:
         labels={'Importance': 'Feature Importance'}
     )
     st.plotly_chart(fig, use_container_width=True)
+    
 
 st.write('---')
 
@@ -104,17 +104,6 @@ if st.sidebar.button('Predict New House Price'):
     new_prediction = model.predict(user_input_features())
     col1.write(f"New median house value is: ${new_prediction[0] * 100000:,.2f}")
 
-
-# Relationship Between Median Income and Housing Prices
-st.subheader('Relationship Between Median Income and Housing Prices')
-
-# Scatter plot of Median Income vs. House Price
-fig = px.scatter(
-    pd.concat([X[['MedInc']], pd.DataFrame({'HousePrice': Y})], axis=1),
-    x='MedInc',
-    y='HousePrice',
-    trendline='ols',
-    labels={'HousePrice': 'Median House Price ($)', 'MedInc': 'Median Income'},
 )
 st.plotly_chart(fig, use_container_width=True)
 st.write('---')
