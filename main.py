@@ -46,28 +46,6 @@ model.fit(X, Y)
 # Apply Model to Make Prediction
 prediction = model.predict(df)
 
-# Display Predicted House Price
-st.subheader('Prediction of Median House Value')
-predicted_value = float(prediction[0])
-st.write(f"The median house value is : ${predicted_value * 100000:,.2f}")
-st.write('---')
-
-# Map Visualization
-st.subheader('Geographical Distribution of Predicted House Prices')
-fig = px.scatter_mapbox(
-    df,
-    lat="Latitude",
-    lon="Longitude",
-    size=[predicted_value],  # Size based on predicted house price
-    color=[predicted_value],  # Color based on predicted house price
-    color_continuous_scale=px.colors.cyclical.IceFire,
-    size_max=15,
-    zoom=5,
-    mapbox_style="carto-positron"
-)
-st.plotly_chart(fig, use_container_width=True)
-st.write('---')
-
 # Feature Importance Visualization
 st.subheader('Feature Importance based on Decision Tree')
 
@@ -104,6 +82,27 @@ fig = px.scatter(
     y='HousePrice',
     trendline='ols',
     labels={'HousePrice': 'Median House Price ($)', 'MedInc': 'Median Income'},
+)
+st.plotly_chart(fig, use_container_width=True)
+st.write('---')
+
+# Display Predicted House Price and Map Visualization
+st.subheader('Prediction and Map Visualization of Median House Value ')
+predicted_value = float(prediction[0])
+st.write(f"The median house value is : ${predicted_value * 100000:,.2f}")
+st.write('---')
+
+st.subheader('Geographical Distribution of Predicted House Prices')
+fig = px.scatter_mapbox(
+    df,
+    lat="Latitude",
+    lon="Longitude",
+    size=[predicted_value],  # Size based on predicted house price
+    color=[predicted_value],  # Color based on predicted house price
+    color_continuous_scale=px.colors.cyclical.IceFire,
+    size_max=15,
+    zoom=5,
+    mapbox_style="carto-positron"
 )
 st.plotly_chart(fig, use_container_width=True)
 st.write('---')
