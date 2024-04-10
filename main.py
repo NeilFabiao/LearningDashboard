@@ -57,58 +57,53 @@ prediction = model.predict(df)
 st.subheader('Prediction and Map Visualization of Median House Value')
 
 # Define columns layout
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 
-# Predicted House Price
+# Column 1: Predicted House Price and Input Parameters
 with col1:
+    st.subheader('Prediction and Input Parameters')
     predicted_value = float(prediction[0])
     st.write(f"The median house value is : ${predicted_value * 100000:,.2f}")
+    st.markdown("**Input Parameters**")
+    st.write(df.T)  # Transpose the dataframe for better visualization
 
-    
-# Map Visualization
+# Column 2: Map Visualization
 with col2:
-    st.subheader('Geographical Distribution of Predicted House Prices')
+    st.subheader('Geographical Distribution of House Prices')
     fig = px.scatter_mapbox(
-        df,
+        pd.concat([X, pd.DataFrame({'HousePrice': Y})], axis=1),
         lat="Latitude",
         lon="Longitude",
-        size=[predicted_value],  # Size based on predicted house price
-        color=[predicted_value],  # Color based on predicted house price
+        color="HousePrice",
         color_continuous_scale=px.colors.cyclical.IceFire,
-        size_max=15,
         zoom=5,
         mapbox_style="carto-positron"
     )
     st.plotly_chart(fig, use_container_width=True)
-    
+
+# Column 3: Feature Importance Visualization
+with col3:
+    st.subheader('Feature Importance')
+    feature_importance_df = pd.DataFrame({
+        'Feature': X.columns, 
+        'Importance': model.feature_importances_
+    })
+    fig = px.bar(
+        feature_importance_df.sort_values(by='Importance', ascending=False),
+        x='Importance', 
+        y='Feature', 
+        orientation='h',
+        labels={'Importance': 'Feature Importance'}
+    )
+    st.plotly_chart(fig, use_container_width=True)
 
 st.write('---')
 
-# Feature Importance Visualization
-st.subheader('Feature Importance based on Decision Tree')
+# Yadd a button to refresh predictions
+if st.sidebar.button('Predict New House Price'):
+    new_prediction = model.predict(user_input_features())
+    col1.write(f"New median house value is: ${new_prediction[0] * 100000:,.2f}")
 
-# Bar plot of feature importance
-feature_importance_df = pd.DataFrame({'Feature': X.columns, 'Importance': model.feature_importances_})
-fig = px.bar(feature_importance_df.sort_values(by='Importance', ascending=False), x='Feature', y='Importance',
-             labels={'Importance': 'Feature Importance'}, color='Importance')
-st.plotly_chart(fig, use_container_width=True)
-st.write('---')
-
-# Analysis of Housing Prices Across Different Regions
-st.subheader('Analysis of Housing Prices Across Different Regions')
-
-# Scatter plot of Latitude vs. Longitude colored by house prices
-fig = px.scatter_mapbox(
-    pd.concat([X[['Latitude', 'Longitude']], pd.DataFrame({'HousePrice': Y})], axis=1),
-    lat="Latitude",
-    lon="Longitude",
-    color="HousePrice",
-    color_continuous_scale="Viridis",
-    zoom=5,
-    mapbox_style="carto-positron"
-)
-st.plotly_chart(fig, use_container_width=True)
-st.write('---')
 
 # Relationship Between Median Income and Housing Prices
 st.subheader('Relationship Between Median Income and Housing Prices')
