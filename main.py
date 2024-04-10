@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 from sklearn.datasets import fetch_california_housing
 from sklearn.tree import DecisionTreeRegressor
+import matplotlib.pyplot as plt
 
 # Set up the page configuration
 st.set_page_config(
