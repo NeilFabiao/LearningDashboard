@@ -68,7 +68,6 @@ col1, col2 = st.columns(2)
 # Column 1: Map Visualization
 with col1:
 
-    st.subheader('Geographical Distribution of Predicted House Prices')
     fig = px.scatter_mapbox(
         df,
         lat="Latitude",
@@ -84,7 +83,7 @@ with col1:
 
 # Column 2: 
 with col2:
-    st.subheader('Feature Importance')
+    st.subheader('Important Features')
     feature_importance_df = pd.DataFrame({
         'Feature': X.columns, 
         'Importance': model.feature_importances_
