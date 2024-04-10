@@ -144,26 +144,3 @@ fig_full_map = px.scatter_mapbox(
 st.plotly_chart(fig_full_map, use_container_width=True)
 
 st.write("---")
-
-'''
-st.markdown('### Feature Importance')
-
-# Re-fit model with all features for feature importance
-model_all_features = DecisionTreeRegressor()
-model_all_features.fit(X, Y)
-
-# Plot feature importance
-features = pd.DataFrame({
-    'Feature': X.columns,
-    'Importance': model_all_features.feature_importances_
-}).sort_values(by='Importance', ascending=False)
-
-fig = px.bar(
-    features,
-    x='Importance',
-    y='Feature',
-    orientation='h',
-    color='Importance',
-    title='Feature Importances in Predicting House Prices'
-)
-st.plotly_chart(fig, use_container_width=True)'''
