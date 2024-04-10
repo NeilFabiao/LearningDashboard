@@ -42,6 +42,22 @@ with st.sidebar:
     # Prepare user input features for prediction
     user_input = pd.DataFrame({'MedInc': [median_income], 'HouseAge': [house_age]})
 
+
+
+# Update the model and predictions when the user input changes
+def update_predictions(median_income, house_age):
+    # Filter the data based on user input
+    user_input = X.copy()
+    user_input['MedInc'] = median_income
+    user_input['HouseAge'] = house_age
+    
+    # Fit the model and predict values based on the user input
+    model = DecisionTreeRegressor()
+    model.fit(user_input[['MedInc', 'HouseAge']], Y)
+    predictions = model.predict(user_input[['MedInc', 'HouseAge']])
+    return predictions
+
+
 # Define columns layout for the main panel
 col1, col2, col3 = st.columns((2, 3, 2), gap="medium")
 
@@ -61,11 +77,10 @@ with col1:
 # Column 2: Geographical distribution of median house value
 with col2:
     
-    predictions = model.predict(user_input)[0]  # Get predictions for all data points
-    X['PredictedValue'] = predictions
+    # Get the updated predictions
+    X['PredictedValue'] = update_predictions(median_income, house_age)
     
-    # Create a map visualization using the latitude and longitude of your data points
-    # and the predicted values
+    # Create the map visualization with updated predictions
     fig = px.scatter_mapbox(
         X,
         lat="Latitude",
