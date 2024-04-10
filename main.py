@@ -18,7 +18,6 @@ st.write('---')
 california_housing = fetch_california_housing(as_frame=True)
 X = california_housing.data
 Y = california_housing.target
-X['MedHouseValue'] = Y
 
 # Sidebar - Specify Input Parameters
 st.sidebar.header('Specify Input Parameters')
@@ -39,8 +38,7 @@ def user_input_features():
             'Population': Population,
             'AveOccup': AveOccup,
             'Latitude': Latitude,
-            'Longitude': Longitude,
-            'MedHouseValue':X['MedHouseValue']
+            'Longitude': Longitude
            }
     features = pd.DataFrame(data, index=[0])
     return features
@@ -76,7 +74,7 @@ fig = px.scatter_mapbox(
     lat="Latitude",
     lon="Longitude",
     size="MedInc",
-    color="MedHouseValue",
+    color="MedInc",
     color_continuous_scale=px.colors.cyclical.IceFire,
     size_max=15,
     zoom=5,
