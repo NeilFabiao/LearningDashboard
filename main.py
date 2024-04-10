@@ -66,12 +66,13 @@ st.write(f"The median house value is : ${predicted_value * 100000:,.2f}")
 st.write('---')
 
 
+st.header('Feature Importance')
+plt.title('Feature importance based on SHAP values')
+
 # Explaining the model's predictions using SHAP values
 explainer = shap.Explainer(model)  # shap.TreeExplainer is now just shap.Explainer in newer versions of SHAP
 shap_values = explainer.shap_values(X)
 
-st.header('Feature Importance')
-plt.title('Feature importance based on SHAP values')
 shap.summary_plot(shap_values, X)
 st.pyplot(bbox_inches='tight')
 st.write('---')
