@@ -61,7 +61,7 @@ with col1:
 # Column 2: Geographical distribution of median house value
 with col2:
     
-    prediction = model.predict(user_input)[0]  # Get predictions for all data points
+    predictions = model.predict(user_input)[0]  # Get predictions for all data points
     X['PredictedValue'] = predictions
     
     # Create a map visualization using the latitude and longitude of your data points
