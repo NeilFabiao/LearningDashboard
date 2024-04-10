@@ -81,7 +81,7 @@ plt.title('Feature importance based on SHAP values (Bar)')
 shap.summary_plot(shap_values, X, plot_type="bar")
 st.pyplot(bbox_inches='tight')
 
- Map Visualization
+# Map Visualization
 st.header('Geographical Distribution of Data')
 fig = px.scatter_mapbox(
     X,
