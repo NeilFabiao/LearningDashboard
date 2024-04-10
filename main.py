@@ -104,6 +104,6 @@ if st.sidebar.button('Predict New House Price'):
     new_prediction = model.predict(user_input_features())
     col1.write(f"New median house value is: ${new_prediction[0] * 100000:,.2f}")
 
-)
+
 st.plotly_chart(fig, use_container_width=True)
 st.write('---')
