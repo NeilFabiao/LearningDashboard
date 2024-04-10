@@ -63,11 +63,11 @@ col1, col2 = st.columns(2)
 with col1:
     predicted_value = float(prediction[0])
     st.write(f"The median house value is : ${predicted_value * 100000:,.2f}")
-    st.write('---')
+    #st.write('---')
 
 # Map Visualization
 with col2:
-    st.subheader('Geographical Distribution of Predicted House Prices')
+    #st.subheader('Geographical Distribution of Predicted House Prices')
     fig = px.scatter_mapbox(
         df,
         lat="Latitude",
@@ -80,7 +80,8 @@ with col2:
         mapbox_style="carto-positron"
     )
     st.plotly_chart(fig, use_container_width=True)
-    st.write('---')
+
+st.write('---')
 
 # Feature Importance Visualization
 st.subheader('Feature Importance based on Decision Tree')
