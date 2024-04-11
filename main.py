@@ -3,13 +3,12 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.datasets import fetch_california_housing
 
 # Load the housing dataset from sklearn
 data = fetch_california_housing()
-housing = pd.DataFrame(data.data, columns=data.feature_names)
-housing['median_house_value'] = data.target  # Renaming the target column
+housing = pd.DataFrame(data['data'], columns=data['feature_names'])
+housing['median_house_value'] = data['target']  # Renaming the target column
 
 # Drop NaN values and duplicates
 housing.dropna(inplace=True)
