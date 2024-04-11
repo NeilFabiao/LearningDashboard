@@ -42,14 +42,27 @@ st.write('---')
 # Sidebar for user inputs
 with st.sidebar:
     st.title("Input Features")
-    median_income = st.number_input("Median Income", value=float(X_train['median_income'].median()))
-    house_age = st.number_input("House Age", value=float(X_train['housing_median_age'].median()))
+    longitude = st.slider('Longitude', float(X_train['longitude'].min()), float(X_train['longitude'].max()), float(X_train['longitude'].median()))
+    latitude = st.slider('Latitude', float(X_train['latitude'].min()), float(X_train['latitude'].max()), float(X_train['latitude'].median()))
+    housing_median_age = st.slider('Housing Median Age', int(X_train['housing_median_age'].min()), int(X_train['housing_median_age'].max()), int(X_train['housing_median_age'].median()))
+    total_rooms = st.slider('Total Rooms', int(X_train['total_rooms'].min()), int(X_train['total_rooms'].max()), int(X_train['total_rooms'].median()))
+    total_bedrooms = st.slider('Total Bedrooms', int(X_train['total_bedrooms'].min()), int(X_train['total_bedrooms'].max()), int(X_train['total_bedrooms'].median()))
+    population = st.slider('Population', int(X_train['population'].min()), int(X_train['population'].max()), int(X_train['population'].median()))
+    households = st.slider('Households', int(X_train['households'].min()), int(X_train['households'].max()), int(X_train['households'].median()))
+    median_income = st.slider('Median Income', float(X_train['median_income'].min()), float(X_train['median_income'].max()), float(X_train['median_income'].median()))
 
 # Function to update predictions based on user input
-def update_predictions(median_income, house_age):
-    user_input = X_train.copy()
-    user_input['MedInc'] = median_income
-    user_input['HouseAge'] = house_age
-    
-    predictions = model.predict(user_input)
+def update_predictions(features):
+    predictions = model.predict([features])
     return predictions
+
+# Main panel
+st.header("Prediction Results")
+if st.button('Predict'):
+    features = [longitude, latitude, housing_median_age, total_rooms, total_bedrooms, population, households, median_income]
+    prediction = update_predictions(features)
+    st.metric(label="Predicted Median House Value", value=f"${prediction[0]:,.2f}")
+
+# Display some data as a table or chart
+st.write("Data Overview")
+st.dataframe(housing.head())
