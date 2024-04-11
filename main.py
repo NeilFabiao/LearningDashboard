@@ -115,7 +115,7 @@ fig = px.scatter_mapbox(
     size="median_house_value", 
     color_continuous_scale='viridis', 
     size_max=15, 
-    zoom=5
+    zoom=0
 )
 fig.update_layout(mapbox_style="carto-positron")
 
