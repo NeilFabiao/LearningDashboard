@@ -23,8 +23,10 @@ st.write('---')
 # Load the California housing dataset
 california_housing = pd.read_csv('housing.csv')
 
-X = california_housing.data
-Y = california_housing.target
+# 
+X = california_housing.drop('median_house_value', axis=1)  # Features (drop the target column)
+Y = california_housing['median_house_value']  # Target variable (assuming 'Target' is the column name)
+
 
 # Sidebar for user inputs
 with st.sidebar:
