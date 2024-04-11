@@ -75,16 +75,16 @@ with col3:
 
 st.markdown('### Geographical Distribution of Median House Value')
     
-    # Create a scatter plot
-    fig = px.scatter_mapbox(
-        housing, 
-        lat="latitude", 
-        lon="longitude", 
-        color="median_house_value", 
-        size="median_house_value", 
-        color_continuous_scale='viridis', 
-        size_max=15, 
-        zoom=5
-    )
-    fig.update_layout(mapbox_style="carto-positron")
-    st.plotly_chart(fig, use_container_width=True)
+# Create a scatter plot
+fig = px.scatter_mapbox(
+    housing, 
+    lat="latitude", 
+    lon="longitude", 
+    color="median_house_value", 
+    size="median_house_value", 
+    color_continuous_scale='viridis', 
+    size_max=15, 
+    zoom=5
+)
+fig.update_layout(mapbox_style="carto-positron")
+st.plotly_chart(fig, use_container_width=True)
