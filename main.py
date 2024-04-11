@@ -23,7 +23,18 @@ X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_
 
 # Train the model with the training set
 model = DecisionTreeRegressor()
-model.fit(X_train, y_train)
+
+# Check for missing values in X_train and y_train
+missing_values_X = X_train.isnull().sum().sum()
+missing_values_y = y_train.isnull().sum().sum()
+
+if missing_values_X > 0 or missing_values_y > 0:
+    st.error("Missing values detected in the training data. Please handle missing values before training the model.")
+else:
+    # Train the model with the training set
+    model = DecisionTreeRegressor()
+    model.fit(X_train, y_train)
+
 
 # Define ocean proximity options
 ocean_proximity_options = ['<1H OCEAN', 'INLAND', 'NEAR OCEAN', 'NEAR BAY', 'ISLAND']
