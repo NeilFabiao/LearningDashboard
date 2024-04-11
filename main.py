@@ -57,7 +57,20 @@ with col2:
 
     # Predict the price for the user input
     prediction = model.predict(user_input_df)[0]
-    predicted_house = pd.DataFrame({'latitude': [user_input_df['latitude'].iloc[0]], 'longitude': [user_input_df['longitude'].iloc[0]], 'PredictedValue': [prediction]})
+
+    # Find the nearest record in the dataset to the predicted price
+    nearest_record = housing.iloc[(housing['median_house_value'] - prediction).abs().argsort()[:1]]
+
+    # Extract latitude and longitude from the nearest record
+    latitude = nearest_record['latitude'].values[0]
+    longitude = nearest_record['longitude'].values[0]
+
+    # Create a DataFrame with predicted house values using the latitude and longitude from the nearest record
+    predicted_house = pd.DataFrame({
+        'latitude': [latitude],
+        'longitude': [longitude],
+        'PredictedValue': [prediction]
+    })
 
     # Create a scatter plot for the predicted house
     fig = px.scatter_mapbox(
@@ -72,6 +85,7 @@ with col2:
     )
     fig.update_layout(mapbox_style="carto-positron")
     st.plotly_chart(fig, use_container_width=True)
+
 
 # Column 3: Information about the data and top districts
 with col3:
