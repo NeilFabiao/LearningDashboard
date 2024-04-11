@@ -53,28 +53,25 @@ with col1:
 
 # Column 2: Geographical distribution of predicted house
 with col2:
-    st.markdown('### Geographical Distribution of Predicted House Values')
-    
-    # Make a copy of the user input dataframe
-    user_input_copy = user_input_df.copy()
-    
-    # Predict the price for the entire dataset
-    housing['PredictedValue'] = model.predict(X)
-    
-    # Create a scatter plot
+    st.markdown('### Geographical Distribution of Predicted House')
+
+    # Predict the price for the user input
+    prediction = model.predict(user_input_df)[0]
+    predicted_house = pd.DataFrame({'latitude': [user_input_df['latitude'].iloc[0]], 'longitude': [user_input_df['longitude'].iloc[0]], 'PredictedValue': [prediction]})
+
+    # Create a scatter plot for the predicted house
     fig = px.scatter_mapbox(
-        housing, 
+        predicted_house, 
         lat="latitude", 
         lon="longitude", 
         color="PredictedValue", 
         size="PredictedValue", 
         color_continuous_scale='viridis', 
         size_max=15, 
-        zoom=5
+        zoom=10
     )
     fig.update_layout(mapbox_style="carto-positron")
     st.plotly_chart(fig, use_container_width=True)
-    st.write('---')
 
 # Column 3: Information about the data and top districts
 with col3:
