@@ -98,11 +98,6 @@ with col3:
     [Aurélien Géron](https://inria.github.io/scikit-learn-mooc/python_scripts/datasets_california_housing.html).
 
     """)
-    
-    st.markdown('#### Top Districts by Median House Value')
-    # You can add code here to display top districts by median house value
-    top_districts = housing.groupby('district')['median_house_value'].median().nlargest(5)
-    st.write(top_districts)
 
 # Additional analysis and visualizations can be added below
 
@@ -133,3 +128,10 @@ fig.add_trace(px.scatter_mapbox(
 ).data[0])
 
 st.plotly_chart(fig, use_container_width=True)
+
+st.write("---")
+
+st.markdown('#### Top Districts by Median House Value')
+    # You can add code here to display top districts by median house value
+    top_districts = housing.groupby('district')['median_house_value'].median().nlargest(5)
+    st.write(top_districts)
