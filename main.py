@@ -34,10 +34,6 @@ with st.sidebar:
 # Convert user input to DataFrame
 user_input_df = pd.DataFrame([user_input])
 
-# Display user input
-st.write("Your Input Features")
-st.dataframe(user_input_df)
-
 # Train the model with the entire dataset
 X = housing[['total_bedrooms', 'median_income', 'housing_median_age']]
 Y = housing['median_house_value']
@@ -55,23 +51,9 @@ with col1:
     prediction = model.predict(user_input_df)[0]
     st.metric(label="Predicted Median House Value", value=f"${prediction * 1000:,.0f}")
 
-# Column 2: Geographical distribution of median house value
+# Column 2: Geographical distribution of predicted house
 with col2:
-    st.markdown('### Geographical Distribution of Median House Value')
     
-    # Create a scatter plot
-    fig = px.scatter_mapbox(
-        housing, 
-        lat="latitude", 
-        lon="longitude", 
-        color="median_house_value", 
-        size="median_house_value", 
-        color_continuous_scale='viridis', 
-        size_max=15, 
-        zoom=5
-    )
-    fig.update_layout(mapbox_style="carto-positron")
-    st.plotly_chart(fig, use_container_width=True)
 
 # Column 3: Information about the data and top districts
 with col3:
@@ -89,3 +71,19 @@ with col3:
     # You can add code here to display top districts by median house value
 
 # Additional analysis and visualizations can be added below
+
+st.markdown('### Geographical Distribution of Median House Value')
+    
+    # Create a scatter plot
+    fig = px.scatter_mapbox(
+        housing, 
+        lat="latitude", 
+        lon="longitude", 
+        color="median_house_value", 
+        size="median_house_value", 
+        color_continuous_scale='viridis', 
+        size_max=15, 
+        zoom=5
+    )
+    fig.update_layout(mapbox_style="carto-positron")
+    st.plotly_chart(fig, use_container_width=True)
