@@ -81,7 +81,7 @@ with col2:
         size="PredictedValue", 
         color_continuous_scale='viridis', 
         size_max=15, 
-        zoom=1
+        zoom=3
     )
     fig.update_layout(mapbox_style="carto-positron")
     st.plotly_chart(fig, use_container_width=True)
