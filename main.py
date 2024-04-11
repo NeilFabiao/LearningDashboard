@@ -26,35 +26,20 @@ with st.sidebar:
     st.title("Input Features")
     # Collect user input
     user_input = {
-        'longitude': st.slider('Longitude', housing['longitude'].min(), housing['longitude'].max(), housing['longitude'].median()),
-        'latitude': st.slider('Latitude', housing['latitude'].min(), housing['latitude'].max(), housing['latitude'].median()),
-        'housing_median_age': st.slider('Housing Median Age', housing['housing_median_age'].min(), housing['housing_median_age'].max(), housing['housing_median_age'].median()),
-        'total_rooms': st.slider('Total Rooms', housing['total_rooms'].min(), housing['total_rooms'].max(), housing['total_rooms'].median()),
         'total_bedrooms': st.slider('Total Bedrooms', housing['total_bedrooms'].min(), housing['total_bedrooms'].max(), housing['total_bedrooms'].median()),
-        'population': st.slider('Population', housing['population'].min(), housing['population'].max(), housing['population'].median()),
-        'households': st.slider('Households', housing['households'].min(), housing['households'].max(), housing['households'].median()),
         'median_income': st.slider('Median Income', housing['median_income'].min(), housing['median_income'].max(), housing['median_income'].median()),
-        'ocean_proximity': st.selectbox('Ocean Proximity', ocean_proximity_options)
+        'housing_median_age': st.slider('Housing Median Age', housing['housing_median_age'].min(), housing['housing_median_age'].max(), housing['housing_median_age'].median()),
     }
 
 # Convert user input to DataFrame
 user_input_df = pd.DataFrame([user_input])
-
-# One-hot encode the 'ocean_proximity' column
-encoder = OneHotEncoder()
-ocean_proximity_encoded = encoder.fit_transform(user_input_df[['ocean_proximity']]).toarray()
-ocean_proximity_encoded_df = pd.DataFrame(ocean_proximity_encoded, columns=encoder.get_feature_names_out(['ocean_proximity']))
-
-# Drop the original 'ocean_proximity' column and concatenate the one-hot encoded columns
-user_input_df = user_input_df.drop('ocean_proximity', axis=1)
-user_input_df = pd.concat([user_input_df, ocean_proximity_encoded_df], axis=1)
 
 # Display user input
 st.write("Your Input Features")
 st.dataframe(user_input_df)
 
 # Train the model with the entire dataset
-X = housing.drop('median_house_value', axis=1)
+X = housing[['total_bedrooms', 'median_income', 'housing_median_age']]
 Y = housing['median_house_value']
 model = DecisionTreeRegressor()
 model.fit(X, Y)
