@@ -33,8 +33,11 @@ X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_
 model = DecisionTreeRegressor()
 model.fit(X_train, y_train)
 
+# Define ocean proximity options
+ocean_proximity_options = ['<1H OCEAN', 'INLAND', 'NEAR OCEAN', 'NEAR BAY', 'ISLAND']
+
 # Streamlit UI setup
-st.set_page_config(page_title="California Housing Dashboard", page_icon="🏠", layout="wide",initial_sidebar_state="expanded")
+st.set_page_config(page_title="California Housing Dashboard", page_icon="🏠", layout="wide", initial_sidebar_state="expanded")
 st.title("Housing Price Prediction 🏠")
 
 st.write('---')
