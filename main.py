@@ -43,8 +43,8 @@ st.write('---')
 # Sidebar for user inputs
 with st.sidebar:
     st.title("Input Features")
-    median_income = st.number_input("Median Income", value=float(X_train['MedInc'].median()))
-    house_age = st.number_input("House Age", value=float(X_train['HouseAge'].median()))
+    median_income = st.number_input("Median Income", value=float(X_train['median_income'].median()))
+    house_age = st.number_input("House Age", value=float(X_train['housing_median_age'].median()))
 
 # Function to update predictions based on user input
 def update_predictions(median_income, house_age):
