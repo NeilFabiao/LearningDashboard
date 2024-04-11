@@ -4,9 +4,12 @@ import pandas as pd
 import plotly.express as px
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.datasets import fetch_california_housing
 
-# Load the housing dataset from a CSV file
-housing = pd.read_csv('housing.csv')
+# Load the housing dataset from sklearn
+data = fetch_california_housing()
+housing = pd.DataFrame(data.data, columns=data.feature_names)
+housing['target'] = data.target
 
 # Drop NaN values and duplicates
 housing.dropna(inplace=True)
