@@ -9,7 +9,7 @@ from sklearn.datasets import fetch_california_housing
 # Load the housing dataset from sklearn
 data = fetch_california_housing()
 housing = pd.DataFrame(data.data, columns=data.feature_names)
-housing['target'] = data.target
+housing['median_house_value'] = data.target  # Renaming the target column
 
 # Drop NaN values and duplicates
 housing.dropna(inplace=True)
@@ -29,16 +29,15 @@ with st.sidebar:
     st.title("Input Features")
     # Collect user input
     user_input = {
-        'total_bedrooms': st.slider('Total Bedrooms', housing['total_bedrooms'].min(), housing['total_bedrooms'].max(), housing['total_bedrooms'].median()),
-        'median_income': st.slider('Median Income', housing['median_income'].min(), housing['median_income'].max(), housing['median_income'].median()),
-        'housing_median_age': st.slider('Housing Median Age', housing['housing_median_age'].min(), housing['housing_median_age'].max(), housing['housing_median_age'].median()),
+        'median_income': st.slider('Median Income', housing['MedInc'].min(), housing['MedInc'].max(), housing['MedInc'].median()),
+        'housing_median_age': st.slider('Housing Median Age', housing['HouseAge'].min(), housing['HouseAge'].max(), housing['HouseAge'].median()),
     }
 
 # Convert user input to DataFrame
 user_input_df = pd.DataFrame([user_input])
 
 # Train the model with the entire dataset
-X = housing[['total_bedrooms', 'median_income', 'housing_median_age']]
+X = housing[['MedInc', 'HouseAge']]
 Y = housing['median_house_value']
 model = DecisionTreeRegressor()
 model.fit(X, Y)
@@ -65,8 +64,8 @@ with col2:
     nearest_record = housing.iloc[(housing['median_house_value'] - prediction).abs().argsort()[:1]]
 
     # Extract latitude and longitude from the nearest record
-    latitude = nearest_record['latitude'].values[0]
-    longitude = nearest_record['longitude'].values[0]
+    latitude = nearest_record['Latitude'].values[0]
+    longitude = nearest_record['Longitude'].values[0]
 
     # Create a DataFrame with predicted house values using the latitude and longitude from the nearest record
     predicted_house = pd.DataFrame({
@@ -112,8 +111,8 @@ st.markdown('### Geographical Distribution of Median House Value')
 # Create a scatter plot
 fig = px.scatter_mapbox(
     housing, 
-    lat="latitude", 
-    lon="longitude", 
+    lat="Latitude", 
+    lon="Longitude", 
     color="median_house_value", 
     size="median_house_value", 
     color_continuous_scale='viridis', 
