@@ -4,6 +4,7 @@ import plotly.express as px
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import OneHotEncoder
 
 # Load the housing dataset from a CSV file
 housing = pd.read_csv('housing.csv')
