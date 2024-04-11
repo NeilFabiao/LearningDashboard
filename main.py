@@ -118,4 +118,16 @@ fig = px.scatter_mapbox(
     zoom=5
 )
 fig.update_layout(mapbox_style="carto-positron")
+
+# Add the predicted house location with a distinct color and legend
+fig.add_trace(px.scatter_mapbox(
+    predicted_house, 
+    lat="latitude", 
+    lon="longitude", 
+    color="PredictedValue", 
+    size="PredictedValue", 
+    color_continuous_scale='red', 
+    size_max=15
+).data[0])
+
 st.plotly_chart(fig, use_container_width=True)
