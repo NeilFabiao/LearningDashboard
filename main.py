@@ -35,8 +35,8 @@ model.fit(X_train, y_train)
 
 # Streamlit UI setup
 st.set_page_config(page_title="California Housing Dashboard", page_icon="🏠", layout="wide",initial_sidebar_state="expanded")
-st.title("Housing Price Prediction App 🏠")
-st.write("This app predicts the median house value based on the California House Price data.")
+st.title("Housing Price Prediction 🏠")
+st.write("This Dashboard predicts the median house value based on the California House Price data.")
 
 st.write('---')
 
