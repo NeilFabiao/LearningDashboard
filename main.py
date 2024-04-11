@@ -132,6 +132,6 @@ st.plotly_chart(fig, use_container_width=True)
 st.write("---")
 
 st.markdown('#### Top Districts by Median House Value')
-    # You can add code here to display top districts by median house value
-    top_districts = housing.groupby('district')['median_house_value'].median().nlargest(5)
-    st.write(top_districts)
+# You can add code here to display top districts by median house value
+top_districts = housing.groupby('district')['median_house_value'].median().nlargest(5)
+st.write(top_districts)
