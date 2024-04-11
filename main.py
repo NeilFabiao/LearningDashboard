@@ -1,3 +1,4 @@
+# Import necessary libraries
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -12,15 +13,6 @@ housing = pd.read_csv('housing.csv')
 # Drop NaN values and duplicates
 housing.dropna(inplace=True)
 housing.drop_duplicates(inplace=True)
-
-# One-hot encode the 'ocean_proximity' categorical variable
-encoder = OneHotEncoder()
-ocean_proximity_encoded = encoder.fit_transform(housing[['ocean_proximity']]).toarray()
-ocean_proximity_encoded_df = pd.DataFrame(ocean_proximity_encoded, columns=encoder.get_feature_names_out(['ocean_proximity']))
-
-# Drop the original 'ocean_proximity' column and concatenate the one-hot encoded columns
-housing = housing.drop('ocean_proximity', axis=1).reset_index(drop=True)
-housing = pd.concat([housing, ocean_proximity_encoded_df], axis=1)
 
 # Split the dataset into features and target variable
 X = housing.drop('median_house_value', axis=1)
@@ -60,6 +52,15 @@ with st.sidebar:
 
 # Convert user input to DataFrame
 user_input_df = pd.DataFrame([user_input])
+
+# One-hot encode the 'ocean_proximity' column
+encoder = OneHotEncoder()
+ocean_proximity_encoded = encoder.fit_transform(user_input_df[['ocean_proximity']]).toarray()
+ocean_proximity_encoded_df = pd.DataFrame(ocean_proximity_encoded, columns=encoder.get_feature_names_out(['ocean_proximity']))
+
+# Drop the original 'ocean_proximity' column and concatenate the one-hot encoded columns
+user_input_df = user_input_df.drop('ocean_proximity', axis=1)
+user_input_df = pd.concat([user_input_df, ocean_proximity_encoded_df], axis=1)
 
 # Display user input
 st.write("Your Input Features")
