@@ -2,9 +2,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
-import matplotlib.pyplot as plt
 from sklearn.preprocessing import OneHotEncoder
 
 # Load the housing dataset from a CSV file
@@ -13,28 +11,6 @@ housing = pd.read_csv('housing.csv')
 # Drop NaN values and duplicates
 housing.dropna(inplace=True)
 housing.drop_duplicates(inplace=True)
-
-# Split the dataset into features and target variable
-X = housing.drop('median_house_value', axis=1)
-Y = housing['median_house_value']
-
-# Split the data into train and test sets
-X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-
-# Train the model with the training set
-model = DecisionTreeRegressor()
-
-# Check for missing values in X_train and y_train
-missing_values_X = X_train.isnull().sum().sum()
-missing_values_y = y_train.isnull().sum().sum()
-
-if missing_values_X > 0 or missing_values_y > 0:
-    st.error("Missing values detected in the training data. Please handle missing values before training the model.")
-else:
-    # Train the model with the training set
-    model = DecisionTreeRegressor()
-    model.fit(X_train, y_train)
-
 
 # Define ocean proximity options
 ocean_proximity_options = ['<1H OCEAN', 'INLAND', 'NEAR OCEAN', 'NEAR BAY', 'ISLAND']
@@ -50,14 +26,14 @@ with st.sidebar:
     st.title("Input Features")
     # Collect user input
     user_input = {
-        'longitude': st.slider('Longitude', float(X_train['longitude'].min()), float(X_train['longitude'].max()), float(X_train['longitude'].median())),
-        'latitude': st.slider('Latitude', float(X_train['latitude'].min()), float(X_train['latitude'].max()), float(X_train['latitude'].median())),
-        'housing_median_age': st.slider('Housing Median Age', int(X_train['housing_median_age'].min()), int(X_train['housing_median_age'].max()), int(X_train['housing_median_age'].median())),
-        'total_rooms': st.slider('Total Rooms', int(X_train['total_rooms'].min()), int(X_train['total_rooms'].max()), int(X_train['total_rooms'].median())),
-        'total_bedrooms': st.slider('Total Bedrooms', int(X_train['total_bedrooms'].min()), int(X_train['total_bedrooms'].max()), int(X_train['total_bedrooms'].median())),
-        'population': st.slider('Population', int(X_train['population'].min()), int(X_train['population'].max()), int(X_train['population'].median())),
-        'households': st.slider('Households', int(X_train['households'].min()), int(X_train['households'].max()), int(X_train['households'].median())),
-        'median_income': st.slider('Median Income', float(X_train['median_income'].min()), float(X_train['median_income'].max()), float(X_train['median_income'].median())),
+        'longitude': st.slider('Longitude', housing['longitude'].min(), housing['longitude'].max(), housing['longitude'].median()),
+        'latitude': st.slider('Latitude', housing['latitude'].min(), housing['latitude'].max(), housing['latitude'].median()),
+        'housing_median_age': st.slider('Housing Median Age', housing['housing_median_age'].min(), housing['housing_median_age'].max(), housing['housing_median_age'].median()),
+        'total_rooms': st.slider('Total Rooms', housing['total_rooms'].min(), housing['total_rooms'].max(), housing['total_rooms'].median()),
+        'total_bedrooms': st.slider('Total Bedrooms', housing['total_bedrooms'].min(), housing['total_bedrooms'].max(), housing['total_bedrooms'].median()),
+        'population': st.slider('Population', housing['population'].min(), housing['population'].max(), housing['population'].median()),
+        'households': st.slider('Households', housing['households'].min(), housing['households'].max(), housing['households'].median()),
+        'median_income': st.slider('Median Income', housing['median_income'].min(), housing['median_income'].max(), housing['median_income'].median()),
         'ocean_proximity': st.selectbox('Ocean Proximity', ocean_proximity_options)
     }
 
@@ -77,48 +53,16 @@ user_input_df = pd.concat([user_input_df, ocean_proximity_encoded_df], axis=1)
 st.write("Your Input Features")
 st.dataframe(user_input_df)
 
-# Define columns layout for the main panel
-col1, col2, col3 = st.columns((2, 3, 2), gap="medium")
+# Train the model with the entire dataset
+X = housing.drop('median_house_value', axis=1)
+Y = housing['median_house_value']
+model = DecisionTreeRegressor()
+model.fit(X, Y)
 
-# Column 1: Input parameters and prediction
-with col1:
-    st.markdown('### Prediction')
+# Predict the price
+prediction = model.predict(user_input_df)[0]
 
-    # Predict the price
-    prediction = model.predict(user_input_df)[0]
-    st.metric(label="Predicted Median House Value", value=f"${prediction * 1000:,.0f}")
-
-# Column 2: Geographical distribution of median house value
-with col2:
-    st.markdown('### Geographical Distribution of Median House Value')
-    
-    # Create a scatter plot
-    fig = px.scatter_mapbox(
-        X, 
-        lat="latitude", 
-        lon="longitude", 
-        color="median_house_value", 
-        size="median_house_value", 
-        color_continuous_scale='viridis', 
-        size_max=15, 
-        zoom=5
-    )
-    fig.update_layout(mapbox_style="carto-positron")
-    st.plotly_chart(fig, use_container_width=True)
-
-# Column 3: Information about the data and top districts
-with col3:
-    st.markdown('### Dataset Citation and Reference')
-    st.write("""
-    This data was initially featured in the following paper:
-    Pace, R. Kelley, and Ronald Barry. "Sparse spatial autoregressions." Statistics & Probability Letters 33.3 (1997): 291-297.
-    and I encountered it in 'Hands-On Machine learning with Scikit-Learn and TensorFlow' by Aurélien Géron.
-    Aurélien Géron wrote:
-    This dataset is a modified version of the California Housing dataset available from:
-    Luís Torgo's page (University of Porto)
-    """)
-    
-    st.markdown('#### Top Districts by Median House Value')
-    # You can add code here to display top districts by median house value
-
-# Additional analysis and visualizations can be added below
+# Display prediction
+st.write('---')
+st.subheader('Prediction')
+st.write(f"Predicted Median House Value: ${prediction * 1000:,.0f}")
