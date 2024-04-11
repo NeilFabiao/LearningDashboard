@@ -126,7 +126,7 @@ fig.add_trace(px.scatter_mapbox(
     lon="longitude", 
     color="PredictedValue", 
     size="PredictedValue", 
-    color_continuous_scale='red', 
+    color_continuous_scale=[[0, 'red'], [1, 'red']], 
     size_max=15
 ).data[0])
 
