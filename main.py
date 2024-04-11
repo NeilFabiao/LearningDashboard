@@ -21,7 +21,8 @@ This app predicts the **California House Price**!
 st.write('---')
 
 # Load the California housing dataset
-california_housing = fetch_california_housing(as_frame=True)
+california_housing = pd.read_csv('housing.csv')
+
 X = california_housing.data
 Y = california_housing.target
 
