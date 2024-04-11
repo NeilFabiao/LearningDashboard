@@ -54,7 +54,7 @@ with col1:
 # Column 2: Geographical distribution of predicted house
 with col2:
     #here
-    
+    st.write('---')
 
 # Column 3: Information about the data and top districts
 with col3:
