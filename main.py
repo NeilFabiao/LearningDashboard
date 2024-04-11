@@ -91,12 +91,12 @@ with col2:
 with col3:
     st.markdown('### Dataset Citation and Reference')
     st.write("""
-    This data was initially featured in the following paper:
-    Pace, R. Kelley, and Ronald Barry. "Sparse spatial autoregressions." Statistics & Probability Letters 33.3 (1997): 291-297.
-    and I encountered it in 'Hands-On Machine learning with Scikit-Learn and TensorFlow' by Aurélien Géron.
-    Aurélien Géron wrote:
-    This dataset is a modified version of the California Housing dataset available from:
-    Luís Torgo's page (University of Porto)
+    The data was originally featured in a paper titled "Sparse spatial autoregressions" by 
+    R. Kelley Pace and Ronald Barry. This dataset is a modified version of the California Housing dataset, 
+    which is available from Luís Torgo's page at the University of Porto. 
+    The information was encountered in "Hands-On Machine learning with Scikit-Learn and TensorFlow" by 
+    [Aurélien Géron](https://inria.github.io/scikit-learn-mooc/python_scripts/datasets_california_housing.html).
+
     """)
     
     st.markdown('#### Top Districts by Median House Value')
