@@ -133,5 +133,12 @@ st.write("---")
 
 st.markdown('#### Top Districts by Median House Value')
 # You can add code here to display top districts by median house value
+# Create a fictitious 'district' column
+housing['district'] = ['District A', 'District B', 'District C', 'District A', 'District B'] * (len(housing) // 5)
+
+# Group by the fictitious 'district' column and calculate the median house value
 top_districts = housing.groupby('district')['median_house_value'].median().nlargest(5)
+
+# Display the top districts
 st.write(top_districts)
+
