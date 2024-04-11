@@ -33,10 +33,10 @@ with st.sidebar:
     st.title('🏠 California Housing Dashboard')
     
     # Median Income input
-    median_income = st.slider('Median Income', float(X['MedInc'].min()), float(X['MedInc'].max()), float(X['MedInc'].median()))
+    median_income = st.slider('Median Income', float(X['median_income'].min()), float(X['median_income'].max()), float(X['median_income'].median()))
     
     # House Age input
-    house_age = st.slider('House Age', int(X['HouseAge'].min()), int(X['HouseAge'].max()), int(X['HouseAge'].median()))
+    house_age = st.slider('House Age', int(X['housing_median_age'].min()), int(X['housing_median_age'].max()), int(X['housing_median_age'].median()))
     
     # Prepare user input features for prediction
     user_input = pd.DataFrame({'MedInc': [median_income], 'HouseAge': [house_age]})
