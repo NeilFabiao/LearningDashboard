@@ -149,3 +149,19 @@ top_districts = housing.groupby('district')['median_house_value'].median().nlarg
 st.write(top_districts)
 
 
+# Geographical Distribution of Districts
+st.markdown('### Geographical Distribution of Districts')
+# Create a scatter plot for districts
+fig_districts = px.scatter_mapbox(
+    housing, 
+    lat="latitude", 
+    lon="longitude", 
+    color="district", 
+    color_continuous_scale='viridis', 
+    size_max=15, 
+    zoom=3
+)
+fig_districts.update_layout(mapbox_style="carto-positron")
+st.plotly_chart(fig_districts, use_container_width=True)
+
+
