@@ -151,7 +151,6 @@ top_districts = district_median_values.nlargest(5)
 top_districts_housing = housing[housing['district'].isin(top_districts.index)]
 
 # Display the top districts by median house value
-st.write('Top Districts by Median House Value:')
 top_districts_table = top_districts.reset_index()
 
 # Geographical Distribution of Top Districts
