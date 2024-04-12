@@ -152,36 +152,31 @@ top_districts = district_median_values.nlargest(5)
 color_discrete_map = {0: 'blue', 1: 'green', 2: 'red', 3: 'purple', 4: 'orange'}
 
 # Create a scatter mapbox for the top districts
-fig_districts = px.scatter_mapbox(
-    housing[housing['district'].isin(top_districts.index)],
-    lat="latitude",
-    lon="longitude",
-    color="district",
-    color_discrete_map=color_discrete_map,
-    size_max=15,
-    zoom=5,
-    title='Map of Top Districts'
-)
+fig_districts = go.Figure()
 
-fig_districts.update_layout(
-    mapbox_style="carto-positron",
-    margin={"r":0,"t":0,"l":0,"b":0},
-    legend_title_text='District',
-    coloraxis_showscale=False  # Disable the default color legend
-)
-
-# Add a legend entry for each district manually
 for district in top_districts.index:
+    district_data = housing[housing['district'] == district]
     fig_districts.add_trace(
         go.Scattermapbox(
+            lat=district_data['latitude'],
+            lon=district_data['longitude'],
             mode='markers',
-            lon=[None],
-            lat=[None],
-            marker=go.scattermapbox.Marker(size=9, color=color_discrete_map[district]),
-            legendgroup=str(district),
+            marker=dict(size=9, color=color_discrete_map[district]),
             name=f"District {district}"
         )
     )
+
+# Update layout to set mapbox properties
+fig_districts.update_layout(
+    title='Map of Top Districts',
+    mapbox=dict(
+        style="carto-positron",
+        zoom=5,
+        center=dict(lat=district_data['latitude'].mean(), lon=district_data['longitude'].mean())
+    ),
+    margin={"r": 0, "t": 0, "l": 0, "b": 0},
+    legend_title_text='District'
+)
 
 # Geographical Distribution of Top Districts
 st.markdown('### Geographical Distribution of Top Districts')
@@ -196,4 +191,4 @@ with col2:
     # Create and display a table of top districts
     top_districts_table = top_districts.reset_index()
     top_districts_table.columns = ['District', 'Median House Value']
-    st.write(top_districts)
+    st.write(top_districts_table)
