@@ -101,6 +101,8 @@ with col3:
 
 # Additional analysis and visualizations can be added below
 
+# Additional analysis and visualizations can be added below
+
 st.markdown('### Geographical Distribution of Median House Value')
     
 # Create a scatter plot
@@ -115,6 +117,21 @@ fig = px.scatter_mapbox(
     zoom=3
 )
 fig.update_layout(mapbox_style="carto-positron")
+
+# Add the predicted house location with a distinct color and legend
+fig.add_trace(px.scatter_mapbox(
+    predicted_house, 
+    lat="latitude", 
+    lon="longitude", 
+    color="PredictedValue", 
+    size="PredictedValue", 
+    color_continuous_scale=[[0, 'red'], [1, 'red']], 
+    size_max=15
+).data[0])
+
+st.plotly_chart(fig, use_container_width=True)
+
+st.write("---")
 
 
 
