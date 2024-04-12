@@ -150,57 +150,36 @@ top_districts = district_median_values.nlargest(5)
 # Filter the housing DataFrame to only include the top districts
 top_districts_housing = housing[housing['district'].isin(top_districts.index)]
 
-# Create the scatter plot for the top districts
-fig_districts = px.scatter_mapbox(
-    top_districts_housing,
-    lat="latitude",
-    lon="longitude",
-    color="district",
-    size_max=15,
-    zoom=10,
-    title='Geographical Distribution of Top Districts'
-)
+# Display the top districts by median house value
+st.write('Top Districts by Median House Value:')
+top_districts_table = top_districts.reset_index()
 
-fig_districts.update_layout(
-    mapbox_style="carto-positron",
-    margin={"r":0,"t":0,"l":0,"b":0}
-)
+# Geographical Distribution of Top Districts
+st.markdown('### Geographical Distribution of Top Districts')
 
-# Custom legend as annotations
-for i, (district, median_value) in enumerate(top_districts.items()):
-    fig_districts.add_annotation(
-        x=1, y=1.05 - i*0.05, # These coordinates might need to be adjusted
-        xref="paper", yref="paper",
-        text=f"District {district}: ${median_value:,.0f}",
-        showarrow=False,
-        align="left",
+# Create two columns for the map and the table
+col1, col2 = st.columns((3, 1))  # Adjust the ratio as needed
+
+# Use the first column for the map
+with col1:
+    fig_districts = px.scatter_mapbox(
+        top_districts_housing,
+        lat="latitude",
+        lon="longitude",
+        color="district",
+        color_continuous_scale=px.colors.qualitative.Vivid,
+        size_max=15,
+        zoom=3,
+        title='Map of Top Districts'
     )
 
-# Background for custom legend
-fig_districts.add_shape(
-    type="rect",
-    xref="paper", yref="paper",
-    x0=0.95, y0=1.05 - len(top_districts) * 0.05, # Adjust the position based on the number of districts
-    x1=1.05, y1=1.05,
-    line=dict(color="Black"),
-    fillcolor="White",
-)
+    fig_districts.update_layout(
+        mapbox_style="carto-positron",
+        margin={"r":0,"t":0,"l":0,"b":0},
+        showlegend=False
+    )
+    st.plotly_chart(fig_districts, use_container_width=True)
 
-fig_districts.update_layout(
-    showlegend=False,
-    annotations=[
-        {
-            "x": 1,
-            "y": 1,
-            "xref": "paper",
-            "yref": "paper",
-            "text": "District Median House Values",
-            "showarrow": False,
-            "font": {
-                "size": 12
-            }
-        }
-    ]
-)
-
-st.plotly_chart(fig_districts, use_container_width=True)
+# Use the second column for the table of top districts
+with col2:
+    st.write(top_districts_table)
