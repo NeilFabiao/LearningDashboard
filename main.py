@@ -144,10 +144,7 @@ fig.add_annotation(
     opacity=0.7,
     text="Predicted House",  # Annotation text
     font=dict(color="black", size=12),
-    showarrow=True,
-    arrowhead=3,
-    arrowwidth=1,
-    arrowcolor="black"
+    showarrow=True
 )
 
 st.write("---")
