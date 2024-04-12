@@ -171,7 +171,7 @@ fig_districts.update_layout(
     title='Map of Top Districts',
     mapbox=dict(
         style="carto-positron",
-        zoom=3,
+        zoom=4,
         center=dict(lat=district_data['latitude'].mean(), lon=district_data['longitude'].mean())
     ),
     margin={"r": 0, "t": 0, "l": 0, "b": 0},
