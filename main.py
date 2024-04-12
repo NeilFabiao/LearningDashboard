@@ -147,14 +147,12 @@ district_median_values = housing.groupby('district')['median_house_value'].media
 # Identify the top districts by median house value
 top_districts = district_median_values.nlargest(5)
 
-# Filter the housing DataFrame to only include the top districts
-top_districts_housing = housing[housing['district'].isin(top_districts.index)]
+# Create a discrete color palette for the top districts
+colors = px.colors.qualitative.Set1
+district_color_map = {district: colors[i] for i, district in enumerate(top_districts.index)}
 
-# Display the top districts by median house value
-top_districts_table = top_districts.reset_index()
-
-# Simplify the top districts table to only include necessary columns
-top_districts_table = top_districts.reset_index().rename(columns={0: 'median_house_value'})
+# Update housing to include only top districts
+housing_top_districts = housing[housing['district'].isin(top_districts.index)]
 
 # Geographical Distribution of Top Districts
 st.markdown('### Geographical Distribution of Top Districts')
@@ -162,28 +160,41 @@ st.markdown('### Geographical Distribution of Top Districts')
 # Create two columns for the map and the table
 col1, col2 = st.columns([3, 1])
 
-# Use the first column for the map
 with col1:
-    # Create a discrete color scale for the districts
-    district_colors = px.colors.qualitative.Set1[:len(top_districts)]
+    # Create a scatter mapbox for the top districts
     fig_districts = px.scatter_mapbox(
-        top_districts_housing,
+        housing_top_districts,
         lat="latitude",
         lon="longitude",
         color="district",
-        color_discrete_map={district: district_colors[district] for district in top_districts.index},
+        color_discrete_map=district_color_map,
         size_max=15,
-        zoom=3,
+        zoom=5,
         title='Map of Top Districts'
     )
-
+    
     fig_districts.update_layout(
         mapbox_style="carto-positron",
         margin={"r":0,"t":0,"l":0,"b":0},
-        showlegend=True
+        showlegend=False  # We'll create a custom legend instead
     )
+    
+    # Add a custom legend for the districts
+    for i, district in enumerate(top_districts.index):
+        fig_districts.add_trace(go.Scattermapbox(
+            lon=[],
+            lat=[],
+            mode='markers',
+            marker=dict(size=10, color=colors[i]),
+            legendgroup=f"district_{district}",
+            name=f'District {district}',
+            showlegend=True
+        ))
+    
     st.plotly_chart(fig_districts, use_container_width=True)
 
-# Use the second column for the table of top districts
 with col2:
-    st.write(top_districts)
+    # Create and display a simplified table of top districts
+    top_districts_table = top_districts.reset_index()
+    top_districts_table.columns = ['District', 'Median House Value']
+    st.table(top_districts_table)
