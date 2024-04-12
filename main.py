@@ -148,8 +148,15 @@ district_median_values = housing.groupby('district')['median_house_value'].media
 # Identify the top districts by median house value
 top_districts = district_median_values.nlargest(5)
 
-# Assign colors to each district for the map
-color_discrete_map = {0: 'blue', 1: 'green', 2: 'red', 3: 'purple', 4: 'orange'}
+# Assign a unique color to each district for the map
+# The colors can be any HEX color or named CSS color
+color_discrete_map = {
+    0: '#636EFA',  # blue
+    1: '#EF553B',  # red
+    2: '#00CC96',  # mint
+    3: '#AB63FA',  # purple
+    4: '#FFA15A',  # orange
+}
 
 # Create a scatter mapbox for the top districts
 fig_districts = px.scatter_mapbox(
@@ -163,6 +170,7 @@ fig_districts = px.scatter_mapbox(
     title='Map of Top Districts'
 )
 
+# Update layout to have no margin and add a proper legend title
 fig_districts.update_layout(
     mapbox_style="carto-positron",
     margin={"r":0,"t":0,"l":0,"b":0},
@@ -178,12 +186,10 @@ for district in top_districts.index:
             lat=[None],
             marker=go.scattermapbox.Marker(size=9, color=color_discrete_map[district]),
             legendgroup=str(district),
-            name=f"District {district}"
+            name=f"District {district}",
+            showlegend=True
         )
     )
-
-# Geographical Distribution of Top Districts
-st.markdown('### Geographical Distribution of Top Districts')
 
 # Create two columns for the map and the table
 col1, col2 = st.columns([3, 1])
@@ -196,6 +202,3 @@ with col2:
     top_districts_table = top_districts.reset_index()
     top_districts_table.columns = ['District', 'Median House Value']
     st.write(top_districts)
-    
-
-
