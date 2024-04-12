@@ -101,10 +101,8 @@ with col3:
 
 # Additional analysis and visualizations can be added below
 
-# Additional analysis and visualizations can be added below
-
 st.markdown('### Geographical Distribution of Median House Value')
-
+    
 # Create a scatter plot
 fig = px.scatter_mapbox(
     housing, 
@@ -114,10 +112,9 @@ fig = px.scatter_mapbox(
     size="median_house_value", 
     color_continuous_scale='viridis', 
     size_max=15, 
-    zoom=3,
-    hover_name="district",  # Add a hover name for the district
-    hover_data={"median_house_value": True},  # Add hover data for median house value
+    zoom=3
 )
+fig.update_layout(mapbox_style="carto-positron")
 
 # Add the predicted house location with a distinct color and legend
 fig.add_trace(px.scatter_mapbox(
@@ -127,35 +124,10 @@ fig.add_trace(px.scatter_mapbox(
     color="PredictedValue", 
     size="PredictedValue", 
     color_continuous_scale=[[0, 'red'], [1, 'red']], 
-    size_max=15,
-    name="Predicted House"  # Add a name for the predicted house legend
+    size_max=15
 ).data[0])
 
-# Add a pointer with an arrow
-    fig.add_annotation(
-        x=longitude,  # X-coordinate of the pointer
-        y=latitude,  # Y-coordinate of the pointer
-        ax=longitude + 0.05,  # X-coordinate of the arrow
-        ay=latitude + 0.05,  # Y-coordinate of the arrow
-        axref="x",
-        ayref="y",
-        xref="x",
-        yref="y",
-        showarrow=True,  # Show the arrow
-        arrowhead=2,  # Set the arrowhead style
-        arrowsize=1,  # Set the arrow size
-        arrowwidth=2,  # Set the arrow width
-        arrowcolor="black",  # Set the arrow color
-        text="Predicted House",  # Add text to the pointer
-        font=dict(
-            family="Arial",
-            size=12,
-            color="black"
-        ),
-    )
-
-    fig.update_layout(mapbox_style="carto-positron")
-    st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, use_container_width=True)
 
 st.write("---")
 
