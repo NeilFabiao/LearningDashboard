@@ -3,7 +3,7 @@
 Repo for learning how to do dashboard with stream lit 
 
 
-Access the website using the link: [Dashboard Boston Housing](https://learning-dashboard-jarvis.streamlit.app)
+Access the website using the link: [Dashboard California Housing](https://learning-dashboard-jarvis.streamlit.app)
 
 
 
