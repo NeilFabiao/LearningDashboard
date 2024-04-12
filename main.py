@@ -134,7 +134,6 @@ st.plotly_chart(fig, use_container_width=True)
 
 st.write("---")
 
-
 # Select relevant features for clustering
 features_for_clustering = housing[['longitude', 'latitude']]
 
@@ -143,34 +142,33 @@ kmeans = KMeans(n_clusters=5, random_state=42)
 housing['district'] = kmeans.fit_predict(features_for_clustering)
 
 # Group by the fictitious 'district' column and calculate the median house value
-top_districts = housing.groupby('district')['median_house_value'].median().nlargest(5)
+district_median_values = housing.groupby('district')['median_house_value'].median()
 
+# Identify the top districts by median house value
+top_districts = district_median_values.nlargest(5)
 
-# Geographical Distribution of Districts
-# Merge the median values back into the housing DataFrame
-housing = housing.merge(district_median_values.rename('median_house_value_median'), on='district', how='left')
+# Filter the housing DataFrame to only include the top districts
+top_districts_housing = housing[housing['district'].isin(top_districts.index)]
 
 # Display the top districts by median house value
-top_districts = district_median_values.nlargest(5)
 st.write('Top Districts by Median House Value:')
 st.write(top_districts)
 
-# Geographical Distribution of Districts
-st.markdown('### Geographical Distribution of Districts')
+# Geographical Distribution of Top Districts
+st.markdown('### Geographical Distribution of Top Districts')
 
-# Create a scatter plot for districts
+# Create a scatter plot for the top districts
 fig_districts = px.scatter_mapbox(
-    housing,
+    top_districts_housing,
     lat="latitude",
     lon="longitude",
     color="district",
-    color_continuous_scale='viridis',
+    color_continuous_scale=px.colors.qualitative.Vivid,  # Vivid color scale for better distinction
     size_max=15,
     zoom=3,
-    hover_data={'district': True, 'median_house_value_median': True}  # Add median house value to hover
+    hover_data={'district': True}  # Add district to hover
 )
 
-fig_districts.update_layout(mapbox_style="carto-positron")
+fig_districts.update_layout(mapbox_style="carto-positron", title='Map of Top Districts')
+fig_districts.update_traces(marker=dict(size=10))  # Increase marker size for better visibility
 st.plotly_chart(fig_districts, use_container_width=True)
-
-
