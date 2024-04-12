@@ -153,29 +153,34 @@ top_districts_housing = housing[housing['district'].isin(top_districts.index)]
 # Display the top districts by median house value
 top_districts_table = top_districts.reset_index()
 
+# Simplify the top districts table to only include necessary columns
+top_districts_table = top_districts.reset_index().rename(columns={0: 'median_house_value'})
+
 # Geographical Distribution of Top Districts
 st.markdown('### Geographical Distribution of Top Districts')
 
 # Create two columns for the map and the table
-col1, col2 = st.columns((3, 1))  # Adjust the ratio as needed
+col1, col2 = st.columns([3, 1])
 
 # Use the first column for the map
 with col1:
+    # Create a discrete color scale for the districts
+    district_colors = px.colors.qualitative.Set1[:len(top_districts)]
     fig_districts = px.scatter_mapbox(
         top_districts_housing,
         lat="latitude",
         lon="longitude",
         color="district",
-        color_continuous_scale=px.colors.qualitative.Vivid,
+        color_discrete_map={district: district_colors[district] for district in top_districts.index},
         size_max=15,
-        zoom=3,
+        zoom=10,
         title='Map of Top Districts'
     )
 
     fig_districts.update_layout(
         mapbox_style="carto-positron",
         margin={"r":0,"t":0,"l":0,"b":0},
-        showlegend=False
+        showlegend=True
     )
     st.plotly_chart(fig_districts, use_container_width=True)
 
