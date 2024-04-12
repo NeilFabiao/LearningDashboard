@@ -191,4 +191,4 @@ with col2:
     # Create and display a table of top districts
     top_districts_table = top_districts.reset_index()
     top_districts_table.columns = ['District', 'Median House Value']
-    st.write(top_district)
+    st.write(top_districts)
