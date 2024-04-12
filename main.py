@@ -116,36 +116,8 @@ fig = px.scatter_mapbox(
 )
 fig.update_layout(mapbox_style="carto-positron")
 
-# Add the predicted house location with a distinct color and legend
-predicted_trace = px.scatter_mapbox(
-    predicted_house, 
-    lat="latitude", 
-    lon="longitude", 
-    color="PredictedValue", 
-    size="PredictedValue", 
-    color_continuous_scale=[[0, 'red'], [1, 'red']], 
-    size_max=15
-).data[0]
 
-fig.add_trace(predicted_trace)
 
-# Add annotation for the predicted house
-fig.add_annotation(
-    x=predicted_house['longitude'].values[0],  # X coordinate of the arrow tail
-    y=predicted_house['latitude'].values[0],   # Y coordinate of the arrow tail
-    xref="x",
-    yref="y",
-    ax=0,  # X component of the arrowhead
-    ay=-40,  # Y component of the arrowhead
-    arrowhead=2,
-    arrowsize=1.5,
-    arrowwidth=1,
-    arrowcolor="black",
-    opacity=0.7,
-    text="Predicted House",  # Annotation text
-    font=dict(color="black", size=12),
-    showarrow=True
-)
 
 st.write("---")
 
