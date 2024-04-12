@@ -20,7 +20,7 @@ ocean_proximity_options = ['<1H OCEAN', 'INLAND', 'NEAR OCEAN', 'NEAR BAY', 'ISL
 # Streamlit UI setup
 st.set_page_config(page_title="California Housing Dashboard", page_icon="🏠", layout="wide", initial_sidebar_state="expanded")
 st.title("Housing Price Prediction 🏠")
-
+st.write('Top left are the sliders to make the housing prediction')
 st.write('---')
 
 # Sidebar for user inputs
