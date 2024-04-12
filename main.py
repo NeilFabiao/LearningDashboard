@@ -173,7 +173,7 @@ with col1:
         color="district",
         color_discrete_map={district: district_colors[district] for district in top_districts.index},
         size_max=15,
-        zoom=10,
+        zoom=3,
         title='Map of Top Districts'
     )
 
@@ -186,5 +186,4 @@ with col1:
 
 # Use the second column for the table of top districts
 with col2:
-    st.write(top_districts_table)
     st.write(top_districts)
