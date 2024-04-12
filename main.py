@@ -4,6 +4,7 @@ import pandas as pd
 import plotly.express as px
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.cluster import KMeans
 
 # Load the housing dataset from a CSV file
 housing = pd.read_csv('housing.csv')
@@ -134,18 +135,17 @@ st.plotly_chart(fig, use_container_width=True)
 st.write("---")
 
 
+# Select relevant features for clustering
+features_for_clustering = housing[['longitude', 'latitude']]
 
-
-st.write("---")
-
-st.markdown('#### Top Districts by Median House Value')
-# You can add code here to display top districts by median house value
-# Create a fictitious 'district' column
-housing['district'] = ['District A', 'District B', 'District C', 'District A', 'District B'] * (len(housing) // 5)
+# Perform k-means clustering
+kmeans = KMeans(n_clusters=5, random_state=42)
+housing['district'] = kmeans.fit_predict(features_for_clustering)
 
 # Group by the fictitious 'district' column and calculate the median house value
 top_districts = housing.groupby('district')['median_house_value'].median().nlargest(5)
 
 # Display the top districts
 st.write(top_districts)
+
 
