@@ -166,7 +166,8 @@ fig_districts = px.scatter_mapbox(
 fig_districts.update_layout(
     mapbox_style="carto-positron",
     margin={"r":0,"t":0,"l":0,"b":0},
-    legend_title_text='District'
+    legend_title_text='District',
+    coloraxis_showscale=False  # Disable the default color legend
 )
 
 # Add a legend entry for each district manually
