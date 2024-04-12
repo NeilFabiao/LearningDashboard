@@ -145,22 +145,31 @@ housing['district'] = kmeans.fit_predict(features_for_clustering)
 # Group by the fictitious 'district' column and calculate the median house value
 top_districts = housing.groupby('district')['median_house_value'].median().nlargest(5)
 
-# Display the top districts
-st.write(top_districts)
 
+# Geographical Distribution of Districts
+# Merge the median values back into the housing DataFrame
+housing = housing.merge(district_median_values.rename('median_house_value_median'), on='district', how='left')
+
+# Display the top districts by median house value
+top_districts = district_median_values.nlargest(5)
+st.write('Top Districts by Median House Value:')
+st.write(top_districts)
 
 # Geographical Distribution of Districts
 st.markdown('### Geographical Distribution of Districts')
+
 # Create a scatter plot for districts
 fig_districts = px.scatter_mapbox(
-    housing, 
-    lat="latitude", 
-    lon="longitude", 
-    color="district", 
-    color_continuous_scale='viridis', 
-    size_max=15, 
-    zoom=3
+    housing,
+    lat="latitude",
+    lon="longitude",
+    color="district",
+    color_continuous_scale='viridis',
+    size_max=15,
+    zoom=3,
+    hover_data={'district': True, 'median_house_value_median': True}  # Add median house value to hover
 )
+
 fig_districts.update_layout(mapbox_style="carto-positron")
 st.plotly_chart(fig_districts, use_container_width=True)
 
