@@ -5,6 +5,7 @@ import plotly.express as px
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.cluster import KMeans
+import plotly.graph_objs as go  # Import graph objects
 
 # Load the housing dataset from a CSV file
 housing = pd.read_csv('housing.csv')
