@@ -9,7 +9,7 @@ Access the website using the link: [Dashboard Boston Housing](https://learning-d
 
 ### Example of Dashboard ###
 
-![alt-text-1](/Project/img/img1.png)
+![alt-text-1](/Project/img/img_1.png)
 
 ### References ###
 
