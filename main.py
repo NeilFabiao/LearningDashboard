@@ -27,7 +27,7 @@ with st.sidebar:
     # Collect user input
     user_input = {
         'total_bedrooms': st.slider('Total Bedrooms', housing['total_bedrooms'].min(), housing['total_bedrooms'].max(), housing['total_bedrooms'].median()),
-        'median_income': st.slider('Median Income', housing['median_income'].min()* 1000, housing['median_income'].max()* 1000, housing['median_income'].median())* 1000,
+        'median_income': st.slider('Median Income', housing['median_income'].min(), housing['median_income'].max(), housing['median_income'].median()),
         'housing_median_age': st.slider('Housing Median Age', housing['housing_median_age'].min(), housing['housing_median_age'].max(), housing['housing_median_age'].median()),
     }
 
