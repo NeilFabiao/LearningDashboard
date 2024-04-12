@@ -187,3 +187,4 @@ with col1:
 # Use the second column for the table of top districts
 with col2:
     st.write(top_districts_table)
+    st.write(top_districts)
